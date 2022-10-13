@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70695782355",
+    "project_id": "visuamos-df285",
+    "storage_bucket": "visuamos-df285.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70695782355:android:442a3f047ba5db5596d126",
+        "android_client_info": {
+          "package_name": "com.garza.visuamos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70695782355-k64f8k1on4ld531to65pdvqnvipk9gth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC8lnOjFj64t4a9B8o2DA3lko55P60DoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70695782355-k64f8k1on4ld531to65pdvqnvipk9gth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
