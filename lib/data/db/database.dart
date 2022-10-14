@@ -68,7 +68,11 @@ class VisuamosDB {
     if (_db != null) {
       return true;
     }
-    final directory = await getApplicationDocumentsDirectory();
+    Directory? directory = Platform.isAndroid
+        ? await getApplicationDocumentsDirectory() //FOR ANDROID
+        : await getApplicationSupportDirectory();
+
+    await getExternalStorageDirectory();
     final path = '${directory.path}/$dbName';
     try {
       final db = await openDatabase(path);

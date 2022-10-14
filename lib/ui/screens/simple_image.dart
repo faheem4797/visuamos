@@ -3,23 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:visuamos/data/db/database.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
-import 'package:visuamos/ui/screens/BalanceSlipWidget.dart';
-import 'package:visuamos/ui/screens/balance_slip_form.dart';
+import 'package:visuamos/ui/screens/simple_image_preview.dart';
+import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import '../../data/db/databaseHelper.dart';
 import '../colors/colors.dart';
 import '../widgets/CommonBottomButton.dart';
 import '../widgets/customTextFormField.dart';
 
-class BalanceSlips extends StatefulWidget {
-  const BalanceSlips({super.key});
+class SimpleImage extends StatefulWidget {
+  final int imageType;
+
+  const SimpleImage({super.key, required this.imageType});
 
   @override
-  State<BalanceSlips> createState() => _BalanceSlipsState();
+  State<SimpleImage> createState() => _SimpleImageState();
 }
 
-class _BalanceSlipsState extends State<BalanceSlips> {
+class _SimpleImageState extends State<SimpleImage> {
   late final VisuamosDB _crudStorage;
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
@@ -27,10 +30,16 @@ class _BalanceSlipsState extends State<BalanceSlips> {
   TextEditingController dateController = TextEditingController();
   TextEditingController couponController = TextEditingController();
 
+  void a() {}
+
   @override
   void initState() {
     _crudStorage = VisuamosDB(dbName: 'visuamosdb.sqlite');
-    _crudStorage.open(0);
+    (widget.imageType == 0)
+        ? _crudStorage.open(0)
+        : (widget.imageType == 1)
+            ? _crudStorage.open(1)
+            : _crudStorage.open(2);
     super.initState();
   }
 
@@ -49,9 +58,15 @@ class _BalanceSlipsState extends State<BalanceSlips> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBarEveryWhere(
-          title: 'Balance Slips',
+          title: (widget.imageType == 0)
+              ? 'Balance Slips'
+              : (widget.imageType == 1)
+                  ? 'Bank Statements'
+                  : 'Dream Checks',
           isIconRequired: true,
-          callBackFunc: () {},
+          callBackFunc: () {
+            logoutAndPushLoginScreen(context);
+          },
         ),
         body: Column(
           children: [
@@ -59,10 +74,7 @@ class _BalanceSlipsState extends State<BalanceSlips> {
               child: StreamBuilder<List<SimpleImageData>>(
                   stream: _crudStorage.all,
                   builder: (context, snapshot) {
-                    print(snapshot.data?.length);
-                    print(snapshot.data);
                     if (snapshot.data == null) {
-                      print('in here bruv');
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -80,25 +92,33 @@ class _BalanceSlipsState extends State<BalanceSlips> {
                                   DataColumn(
                                     label: Text(
                                       'Name',
-                                      style: TextStyle(fontSize: 20.sp),
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   DataColumn(
                                     label: Text(
                                       'Amount',
-                                      style: TextStyle(fontSize: 20.sp),
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   DataColumn(
                                     label: Text(
                                       'Date',
-                                      style: TextStyle(fontSize: 20.sp),
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   DataColumn(
                                     label: Text(
                                       '',
-                                      style: TextStyle(fontSize: 20.sp),
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],
@@ -107,18 +127,22 @@ class _BalanceSlipsState extends State<BalanceSlips> {
                                       (data) => DataRow(
                                         cells: [
                                           DataCell(Text(
+                                            //Name
                                             data.name,
-                                            style: TextStyle(fontSize: 17.sp),
+                                            style: TextStyle(fontSize: 22.sp),
                                           )),
                                           DataCell(Text(
+                                            //Amount
                                             data.amount,
-                                            style: TextStyle(fontSize: 17.sp),
+                                            style: TextStyle(fontSize: 22.sp),
                                           )),
                                           DataCell(Text(
+                                            //Date
                                             data.date,
-                                            style: TextStyle(fontSize: 17.sp),
+                                            style: TextStyle(fontSize: 22.sp),
                                           )),
                                           DataCell(
+                                            //Prebiew Button
                                             ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                     shape:
@@ -129,7 +153,7 @@ class _BalanceSlipsState extends State<BalanceSlips> {
                                                     ),
                                                     primary: black,
                                                     textStyle: TextStyle(
-                                                        fontSize: 20.sp,
+                                                        fontSize: 24.sp,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 onPressed: () {
@@ -137,10 +161,15 @@ class _BalanceSlipsState extends State<BalanceSlips> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            BalanceSlipWidget(
+                                                            SimpleImagePreview(
+                                                              name: data.name,
+                                                              fileName:
+                                                                  data.name,
                                                               date: data.date,
                                                               amount:
                                                                   data.amount,
+                                                              imageType: widget
+                                                                  .imageType,
                                                             )),
                                                   );
                                                 },
@@ -166,14 +195,13 @@ class _BalanceSlipsState extends State<BalanceSlips> {
             ),
             Center(
               child: CommonBottomButton(
-                title: 'Add a Balance Slip',
+                title: (widget.imageType == 0)
+                    ? 'Add a Balance Slip'
+                    : (widget.imageType == 1)
+                        ? 'Add a Bank Statement'
+                        : 'Add a Dream Check',
                 bottomButtonCallBackFunc: () async {
                   await customModalBottomSheet(context);
-                  //          Navigator.push(
-                  //          context,
-                  //        MaterialPageRoute(
-                  //          builder: (context) => const BalanceSlipForm()),
-                  //  );
                 },
               ),
             ),
@@ -192,8 +220,14 @@ class _BalanceSlipsState extends State<BalanceSlips> {
       builder: (context) => Scaffold(
         appBar: AppBarEveryWhere(
           isIconRequired: true,
-          callBackFunc: () {},
-          title: 'Balance Slips',
+          callBackFunc: () {
+            logoutAndPushLoginScreen(context);
+          },
+          title: (widget.imageType == 0)
+              ? 'Balance Slips'
+              : (widget.imageType == 1)
+                  ? 'Bank Statements'
+                  : 'Dream Checks',
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -283,17 +317,22 @@ class _BalanceSlipsState extends State<BalanceSlips> {
                     ),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Generate Balance Slip',
+                          title: (widget.imageType == 0)
+                              ? 'Generate Balance Slip'
+                              : (widget.imageType == 1)
+                                  ? 'Generate a Bank Statement'
+                                  : 'Generate a Dream Check',
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {
                               formKey.currentState?.save();
+
                               var a = await _crudStorage.addImageData(
                                 nameController.text,
                                 amountController.text,
                                 dateController.text,
                                 couponController.text,
-                                0,
+                                widget.imageType,
                               );
                               print(a);
                               setState(() {

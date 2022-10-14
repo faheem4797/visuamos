@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../colors/colors.dart';
 
@@ -12,16 +13,16 @@ class CommonBottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 85,
-      width: 300,
+      height: 85.h,
+      width: 300.w,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
               ),
               primary: black,
               textStyle:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
           onPressed: bottomButtonCallBackFunc,
           child: Text(title)),
     );

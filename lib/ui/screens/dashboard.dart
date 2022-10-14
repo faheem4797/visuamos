@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/screens/login.dart';
+import 'package:visuamos/ui/screens/simple_image.dart';
+import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 
 import '../widgets/dashboardBoxConatiner.dart';
@@ -14,6 +20,19 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  // Future<void> abc() async {
+  //   if (Platform.isAndroid) {
+  //     await requestPermission(Permission.storage);
+  //   } else {
+  //     await requestPermission(Permission.photos);
+  //   }
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,9 +52,31 @@ class _DashboardState extends State<Dashboard> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                DashboardBoxContainer(title: 'Balance Slips'),
-                DashboardBoxContainer(title: 'Bank Statements'),
+              children: [
+                DashboardBoxContainer(
+                  title: 'Balance Slips',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SimpleImage(
+                                imageType: 0,
+                              )),
+                    );
+                  },
+                ),
+                DashboardBoxContainer(
+                  title: 'Bank Statements',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SimpleImage(
+                                imageType: 1,
+                              )),
+                    );
+                  },
+                ),
               ],
             ),
             const SizedBox(
@@ -43,9 +84,23 @@ class _DashboardState extends State<Dashboard> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                DashboardBoxContainer(title: 'Dream Checks'),
-                DashboardBoxContainer(title: 'Dream Movies'),
+              children: [
+                DashboardBoxContainer(
+                  title: 'Dream Checks',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SimpleImage(
+                                imageType: 2,
+                              )),
+                    );
+                  },
+                ),
+                DashboardBoxContainer(
+                  title: 'Dream Movies',
+                  onTap: () {},
+                ),
               ],
             ),
             const SizedBox(
@@ -53,8 +108,11 @@ class _DashboardState extends State<Dashboard> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                DashboardBoxContainer(title: 'Vision Boards'),
+              children: [
+                DashboardBoxContainer(
+                  title: 'Vision Boards',
+                  onTap: () {},
+                ),
               ],
             )
           ],

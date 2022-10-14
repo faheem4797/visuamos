@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:visuamos/ui/screens/balance_slip.dart';
+import 'package:visuamos/ui/screens/simple_image.dart';
 import 'package:visuamos/ui/screens/balance_slip_form.dart';
 import 'package:visuamos/ui/screens/dashboard.dart';
 import 'package:visuamos/ui/screens/login.dart';
-import 'package:visuamos/ui/screens/balanceSlipWidget.dart';
 import 'package:visuamos/ui/screens/onboarding.dart';
 import 'package:visuamos/ui/screens/signup.dart';
+import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
+import 'package:visuamos/ui/widgets/bankStatementWidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
         );
       },
-      child: const BalanceSlips(),
+      child: Dashboard(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../colors/colors.dart';
 
@@ -34,8 +35,8 @@ class CustomTextFormField extends StatelessWidget {
       onTap: onTap,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: darkBlue, width: 3),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: darkBlue, width: 3.w),
           ),
           hintText: hintText,
           labelText: labelText,

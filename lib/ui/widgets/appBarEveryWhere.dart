@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../colors/colors.dart';
 
@@ -19,11 +20,12 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(color: black),
       backgroundColor: darkBlue,
       title: Text(
         title,
-        style: const TextStyle(
-            fontSize: 26, fontWeight: FontWeight.bold, color: black),
+        style: TextStyle(
+            fontSize: 26.sp, fontWeight: FontWeight.bold, color: black),
       ),
       actions: [
         isIconRequired
@@ -31,9 +33,9 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.only(top: 5, right: 10),
                 child: DropdownButton(
                     underline: Container(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.account_circle,
-                      size: 42,
+                      size: 42.sp,
                       color: black,
                     ),
                     items:
