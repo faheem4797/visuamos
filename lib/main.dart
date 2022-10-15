@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:visuamos/ui/screens/simple_image.dart';
-import 'package:visuamos/ui/screens/balance_slip_form.dart';
 import 'package:visuamos/ui/screens/dashboard.dart';
 import 'package:visuamos/ui/screens/login.dart';
 import 'package:visuamos/ui/screens/onboarding.dart';
 import 'package:visuamos/ui/screens/signup.dart';
+import 'package:visuamos/ui/screens/visionBoardScreen.dart';
 import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import 'package:visuamos/ui/widgets/bankStatementWidget.dart';
 import 'package:visuamos/ui/widgets/dreamCheckWidget.dart';
@@ -37,6 +37,6 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
           );
         },
-        child: Dashboard());
+        child: VisionBoardScreen());
   }
 }

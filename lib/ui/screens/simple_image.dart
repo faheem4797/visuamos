@@ -8,7 +8,6 @@ import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
-import '../../data/db/databaseHelper.dart';
 import '../colors/colors.dart';
 import '../widgets/CommonBottomButton.dart';
 import '../widgets/customTextFormField.dart';
