@@ -24,7 +24,10 @@ class CommonBottomButton extends StatelessWidget {
               textStyle:
                   TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
           onPressed: bottomButtonCallBackFunc,
-          child: Text(title)),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+          )),
     );
   }
 }

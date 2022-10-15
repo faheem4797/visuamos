@@ -267,9 +267,22 @@ class _SimpleImageState extends State<SimpleImage> {
                         } else if (amountController.text
                             .contains(RegExp('[a-zA-Z]'))) {
                           return 'Please enter a valid amount';
+                        } else if (('.'
+                                .allMatches(amountController.text)
+                                .length) >
+                            1) {
+                          return 'Please enter a valid amount';
                         } else if (!amountController.text.contains(RegExp(
                             "^[0-9]+(([.]?[0-9]*)?|([ ]?[0-9]*[/]?[0-9]*)?)?"))) {
                           return 'Please enter a valid amount';
+                        } else if (amountController.text != '') {
+                          final temp = amountController.text.split('');
+                          temp[0].contains('.');
+                          if (temp[0].contains('.')) {
+                            return 'Please enter a valid amount';
+                          } else if (temp.last == '.') {
+                            return 'Please enter a valid amount';
+                          }
                         } else {
                           return null;
                         }

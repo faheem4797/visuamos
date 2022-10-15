@@ -20,17 +20,17 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(color: black),
+      iconTheme: const IconThemeData(color: black),
       backgroundColor: darkBlue,
       title: Text(
         title,
         style: TextStyle(
-            fontSize: 26.sp, fontWeight: FontWeight.bold, color: black),
+            fontSize: 24.sp, fontWeight: FontWeight.bold, color: black),
       ),
       actions: [
         isIconRequired
             ? Padding(
-                padding: const EdgeInsets.only(top: 5, right: 10),
+                padding: EdgeInsets.only(top: 5.h, right: 10.w),
                 child: DropdownButton(
                     underline: Container(),
                     icon: Icon(

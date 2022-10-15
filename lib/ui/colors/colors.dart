@@ -8,3 +8,4 @@ const Color lightGrey = Color(0xffE6E7E9);
 const Color blue = Color(0xff5869FF);
 const Color purple = Color(0xff713CEA);
 const Color white = Colors.white;
+const Color lightYellow = Color(0xffFFF5CA);

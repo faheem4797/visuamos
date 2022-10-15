@@ -15,6 +15,7 @@ import 'package:visuamos/ui/widgets/commonBottomButton.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:alh_pdf_view/lib.dart';
+import 'package:visuamos/ui/widgets/dreamCheckWidget.dart';
 import '../colors/colors.dart';
 
 class SimpleImagePreview extends StatefulWidget {
@@ -46,10 +47,11 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
   String? appDirectory;
 
   Future<String> dateSplit(String date) async {
-    List<String> splitList = (date).split("/");
+    List<String> splitList = (date).split("-");
     String midSplitMonth = (int.parse(splitList[1]) - 1).toString();
     splitList[1] = midSplitMonth;
-    String joinedDate = splitList.join('/');
+    String joinedDate = splitList.join('-');
+    //return joinedDate;
     return joinedDate;
   }
 
@@ -128,7 +130,10 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
                       prevDate: await dateSplit(widget.date),
                       amount: widget.amount,
                       name: widget.name)
-                  : Text('')),
+                  : DreamCheckWidget(
+                      date: widget.date,
+                      amount: widget.amount,
+                      name: widget.name)),
     )
         .then((capturedImage) async {
       final tempDirectory = await getTemporaryDirectory();

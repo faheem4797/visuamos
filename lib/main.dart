@@ -10,6 +10,7 @@ import 'package:visuamos/ui/screens/onboarding.dart';
 import 'package:visuamos/ui/screens/signup.dart';
 import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import 'package:visuamos/ui/widgets/bankStatementWidget.dart';
+import 'package:visuamos/ui/widgets/dreamCheckWidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,20 +24,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(428, 926),
-      builder: (context, child) {
-        return MaterialApp(
-          theme: ThemeData(
-            inputDecorationTheme: const InputDecorationTheme(
-              floatingLabelStyle: TextStyle(color: darkBlue),
+        designSize: const Size(428, 926),
+        builder: (context, child) {
+          return MaterialApp(
+            theme: ThemeData(
+              inputDecorationTheme: const InputDecorationTheme(
+                floatingLabelStyle: TextStyle(color: darkBlue),
+              ),
+              fontFamily: 'Merriweather',
             ),
-            fontFamily: 'Merriweather',
-          ),
-          home: child,
-          debugShowCheckedModeBanner: false,
-        );
-      },
-      child: Dashboard(),
-    );
+            home: child,
+            debugShowCheckedModeBanner: false,
+          );
+        },
+        child: Dashboard());
   }
 }

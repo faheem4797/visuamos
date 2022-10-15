@@ -46,7 +46,7 @@ class VisuamosDB {
         'imageType': imageType
       });
 
-      _simpleImagesList = await _fetchSimpleImages(0);
+      _simpleImagesList = await _fetchSimpleImages(imageType);
       _streamController.add(_simpleImagesList);
       return true;
     } catch (e) {
@@ -72,7 +72,6 @@ class VisuamosDB {
         ? await getApplicationDocumentsDirectory() //FOR ANDROID
         : await getApplicationSupportDirectory();
 
-    await getExternalStorageDirectory();
     final path = '${directory.path}/$dbName';
     try {
       final db = await openDatabase(path);
