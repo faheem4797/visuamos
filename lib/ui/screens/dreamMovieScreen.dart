@@ -1,46 +1,42 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:visuamos/data/db/database.dart';
-import 'package:visuamos/data/db/visionBoardDatabase.dart';
-import 'package:visuamos/data/models/simpleImageData.dart';
-import 'package:visuamos/data/models/visionBoardData.dart';
-import 'package:visuamos/ui/screens/simple_image_preview.dart';
-import 'package:visuamos/ui/screens/visionBoardPreview.dart';
+import 'package:visuamos/data/db/movieDatabase.dart';
+import 'package:visuamos/data/models/dreamMovieData.dart';
+import 'package:visuamos/ui/screens/dreamMoviePreview.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import 'package:visuamos/ui/widgets/commonBottomButton.dart';
 import '../colors/colors.dart';
 import '../widgets/customTextFormField.dart';
 
-class VisionBoardScreen extends StatefulWidget {
-  const VisionBoardScreen({super.key});
+class DreamMovieScreen extends StatefulWidget {
+  const DreamMovieScreen({super.key});
 
   @override
-  State<VisionBoardScreen> createState() => _VisionBoardScreenState();
+  State<DreamMovieScreen> createState() => _DreamMovieScreenState();
 }
 
-class _VisionBoardScreenState extends State<VisionBoardScreen> {
-  late final VisionBoardDB _crudStorage;
+class _DreamMovieScreenState extends State<DreamMovieScreen> {
+  late final DreamMovieDB _crudStorage;
   final ImagePicker _picker = ImagePicker();
   String? image1;
   String? image2;
   String? image3;
-  String? image4;
-  String? image5;
-  String? image6;
-  String? image7;
-  String? image8;
+  String? audio;
   final formKey = GlobalKey<FormState>();
-  TextEditingController fileNameController = TextEditingController();
+  TextEditingController caption1Controller = TextEditingController();
+  TextEditingController caption2Controller = TextEditingController();
+  TextEditingController caption3Controller = TextEditingController();
 
   @override
   void initState() {
-    _crudStorage = VisionBoardDB(dbName: 'visionBoarddb.sqlite');
+    _crudStorage = DreamMovieDB(dbName: 'dreamMoviedb.sqlite');
     _crudStorage.open();
     super.initState();
   }
@@ -48,7 +44,9 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
   @override
   void dispose() {
     _crudStorage.close();
-    fileNameController.dispose();
+    caption1Controller.dispose();
+    caption2Controller.dispose();
+    caption3Controller.dispose();
     super.dispose();
   }
 
@@ -57,7 +55,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBarEveryWhere(
-          title: 'Vision Boards',
+          title: 'Dream Movie',
           isIconRequired: true,
           callBackFunc: () {
             logoutAndPushLoginScreen(context);
@@ -66,7 +64,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
         body: Column(
           children: [
             Expanded(
-              child: StreamBuilder<List<VisionBoardData>>(
+              child: StreamBuilder<List<DreamMovieData>>(
                   stream: _crudStorage.all,
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
@@ -79,8 +77,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                       );
                     } else if (snapshot.data!.isNotEmpty) {
                       return Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 5.h),
+                          padding: const EdgeInsets.all(5),
                           child: SingleChildScrollView(
                             child: DataTable(
                               columns: [
@@ -94,7 +91,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                 ),
                                 DataColumn(
                                   label: Text(
-                                    'Image',
+                                    'Caption',
                                     style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.bold),
@@ -120,10 +117,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                           ),
                                         )),
                                         DataCell(Center(
-                                          child: Image.memory(
-                                            base64Decode(data.image2),
-                                            fit: BoxFit.scaleDown,
-                                          ),
+                                          child: Text(data.caption1),
                                         )),
                                         DataCell(
                                           //Prebiew Button
@@ -144,18 +138,21 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          VisionBoardPreview(
-                                                            image1: data.image1,
-                                                            image2: data.image2,
-                                                            image3: data.image3,
-                                                            image4: data.image4,
-                                                            image5: data.image5,
-                                                            image6: data.image6,
-                                                            image7: data.image7,
-                                                            image8: data.image8,
-                                                            fileName:
-                                                                data.fileName,
-                                                          )),
+                                                          DreamMoviePreview(
+                                                              image1:
+                                                                  data.image1,
+                                                              image2:
+                                                                  data.image2,
+                                                              image3:
+                                                                  data.image3,
+                                                              caption1:
+                                                                  data.caption1,
+                                                              caption2:
+                                                                  data.caption2,
+                                                              caption3:
+                                                                  data.caption3,
+                                                              audio:
+                                                                  data.audio)),
                                                 );
                                               },
                                               child: const Text('Preview')),
@@ -179,7 +176,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
             ),
             Center(
               child: CommonBottomButton(
-                title: 'Add a Vision Board',
+                title: 'Add a Dream Movie',
                 bottomButtonCallBackFunc: () async {
                   await customModalBottomSheet(context);
                 },
@@ -203,7 +200,7 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
           callBackFunc: () {
             logoutAndPushLoginScreen(context);
           },
-          title: 'Vision Board',
+          title: 'Dream Movies',
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -214,53 +211,25 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomTextFormField(
-                      controller: fileNameController,
-                      hintText: 'Enter board name here',
-                      labelText: 'Vision Board Name',
-                      validator: (value) {
-                        if (fileNameController.text == '') {
-                          return 'Please enter a vision board name';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    SizedBox(height: 15.h),
                     Center(
                       child: CommonBottomButton(
                           title: 'Pick Images',
                           bottomButtonCallBackFunc: () async {
                             List<XFile> images = await _picker.pickMultiImage();
-                            print('here');
 
-                            if (images.length == 8) {
+                            if (images.length == 3) {
+                              print('here');
                               final tempImage1 =
                                   base64Encode(await images[0].readAsBytes());
                               final tempImage2 =
                                   base64Encode(await images[1].readAsBytes());
                               final tempImage3 =
                                   base64Encode(await images[2].readAsBytes());
-                              final tempImage4 =
-                                  base64Encode(await images[3].readAsBytes());
-                              final tempImage5 =
-                                  base64Encode(await images[4].readAsBytes());
-                              final tempImage6 =
-                                  base64Encode(await images[5].readAsBytes());
-                              final tempImage7 =
-                                  base64Encode(await images[6].readAsBytes());
-                              final tempImage8 =
-                                  base64Encode(await images[7].readAsBytes());
 
                               setState(() {
                                 image1 = tempImage1;
                                 image2 = tempImage2;
                                 image3 = tempImage3;
-                                image4 = tempImage4;
-                                image5 = tempImage5;
-                                image6 = tempImage6;
-                                image7 = tempImage7;
-                                image8 = tempImage8;
                               });
                             }
                           }),
@@ -270,38 +239,107 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                     ),
                     const Center(
                         child: Text(
-                      'Please pick 8 images to create a vision board.',
+                      'Please pick 3 images to create a dream movie.',
                       textAlign: TextAlign.center,
                     )),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Center(
+                      child: CommonBottomButton(
+                          title: 'Pick Audio',
+                          bottomButtonCallBackFunc: () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles(
+                              allowMultiple: false,
+                              type: FileType.custom,
+                              allowedExtensions: ['mp3'],
+                            );
+
+                            if (result != null && result.files.length == 1) {
+                              File file = File(result.files.first.path!);
+                              var contents = await file.readAsBytes();
+
+                              final tempAudio = base64Encode(contents);
+
+                              print(tempAudio);
+
+                              setState(() {
+                                audio = tempAudio;
+                              });
+                            }
+                          }),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFormField(
+                      controller: caption1Controller,
+                      hintText: 'Enter caption 1 here',
+                      labelText: 'Caption 1',
+                      validator: (value) {
+                        if (caption1Controller.text == '') {
+                          return 'Please enter a caption';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFormField(
+                      controller: caption2Controller,
+                      hintText: 'Enter caption 2 here',
+                      labelText: 'Caption 2',
+                      validator: (value) {
+                        if (caption2Controller.text == '') {
+                          return 'Please enter a caption';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFormField(
+                      controller: caption3Controller,
+                      hintText: 'Enter caption 3 here',
+                      labelText: 'Caption 3',
+                      validator: (value) {
+                        if (caption3Controller.text == '') {
+                          return 'Please enter a caption';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
                     SizedBox(height: 15.h),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Generate a Vision Board',
+                          title: 'Generate a Dream Movie',
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {
                               if (image1 != null &&
                                   image2 != null &&
                                   image3 != null &&
-                                  image4 != null &&
-                                  image5 != null &&
-                                  image6 != null &&
-                                  image7 != null &&
-                                  image8 != null) {
-                                var a =
-                                    await _crudStorage.addVisionBoardImageData(
-                                        image1!,
-                                        image2!,
-                                        image3!,
-                                        image4!,
-                                        image5!,
-                                        image6!,
-                                        image7!,
-                                        image8!,
-                                        fileNameController.text);
+                                  audio != null &&
+                                  caption1Controller.text != '' &&
+                                  caption2Controller.text != '' &&
+                                  caption3Controller.text != '') {
+                                var a = await _crudStorage.addDreamMovieData(
+                                  image1!,
+                                  image2!,
+                                  image3!,
+                                  caption1Controller.text,
+                                  caption2Controller.text,
+                                  caption3Controller.text,
+                                  audio!,
+                                );
                                 print(a);
                                 setState(() {
-                                  fileNameController.clear();
+                                  caption1Controller.clear();
+                                  caption2Controller.clear();
+                                  caption3Controller.clear();
                                 });
 
                                 Navigator.pop(context);

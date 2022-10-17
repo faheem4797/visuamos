@@ -5,8 +5,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
+import 'package:visuamos/ui/screens/dreamMovieScreen.dart';
 import 'package:visuamos/ui/screens/login.dart';
 import 'package:visuamos/ui/screens/simple_image.dart';
+import 'package:visuamos/ui/screens/visionBoardScreen.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 
@@ -99,7 +101,13 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 DashboardBoxContainer(
                   title: 'Dream Movies',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DreamMovieScreen()),
+                    );
+                  },
                 ),
               ],
             ),
@@ -111,7 +119,13 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 DashboardBoxContainer(
                   title: 'Vision Boards',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VisionBoardScreen()),
+                    );
+                  },
                 ),
               ],
             )

@@ -21,11 +21,8 @@ import '../colors/colors.dart';
 class SimpleImagePreview extends StatefulWidget {
   final String date;
   final String amount;
-
   final int imageType;
-
   final String fileName;
-
   final String name;
   const SimpleImagePreview(
       {super.key,
