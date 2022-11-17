@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:alh_pdf_view/lib.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,63 +54,55 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
   Uint8List? capturedScreenshotImage;
   Uint8List? pdfDoc;
   final pdf = pw.Document();
-  String? appDirectory;
+
+  saveToStorage(File filePdf) async {
+    if (await requestPermission(Permission.storage)) {
+      print(filePdf.path);
+      print(filePdf.exists());
+
+      final image = pw.MemoryImage(capturedScreenshotImage!);
+      pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.letter,
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Image(image),
+            ); // Center
+          }));
+      await filePdf.writeAsBytes(await pdf.save());
+
+      final pdfDocInBytes = await pdf.save();
+      setState(() {
+        pdfDoc = pdfDocInBytes;
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Vision Board has been successfully saved as pdf in the External Documents directory')));
+      print(
+          'Vision Board has been successfully saved as pdf in the documents directory');
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission not granted')));
+      print('permission not granted');
+    }
+  }
 
   Future<void> convertToPdfAndSave() async {
     if (capturedScreenshotImage != null) {
       print('screenshot not null');
       if (Platform.isAndroid) {
-        print('android');
-        if (await requestPermission(Permission.storage)) {
-          var path = await ExternalPath.getExternalStoragePublicDirectory(
-              ExternalPath.DIRECTORY_DOCUMENTS);
-          File filePdf = File('${path}/${widget.fileName}.pdf');
-          print(filePdf.path);
-          print(filePdf.exists());
-
-          final image = pw.MemoryImage(capturedScreenshotImage!);
-          pdf.addPage(pw.Page(
-              pageFormat: PdfPageFormat.letter,
-              build: (pw.Context context) {
-                return pw.Center(
-                  child: pw.Image(image),
-                ); // Center
-              }));
-          await filePdf.writeAsBytes(await pdf.save());
-
-          final pdfDocInBytes = await pdf.save();
-          setState(() {
-            pdfDoc = pdfDocInBytes;
-          });
-        } else {
-          //
-          //
-          //
-          //
-//Need to see this again as aswell
-          //
-          //
-          //
-          //
-          var path = await ExternalPath.getExternalStoragePublicDirectory(
-              ExternalPath.DIRECTORY_DOCUMENTS);
-          File filePdf = File('${path}/${widget.fileName}.pdf');
-          print(filePdf.path);
-          print(await filePdf.exists());
-          final image = pw.MemoryImage(capturedScreenshotImage!);
-          pdf.addPage(pw.Page(
-              pageFormat: PdfPageFormat.letter,
-              build: (pw.Context context) {
-                return pw.Center(
-                  child: pw.Image(image),
-                ); // Center
-              }));
-          await filePdf.writeAsBytes(await pdf.save());
-          print(filePdf.path);
-          print(await filePdf.exists());
-        }
-      } else {
-        print('ios implementation here');
+        var path = await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOCUMENTS);
+        File filePdfAndroid = File('$path/${widget.fileName}.pdf');
+        await saveToStorage(filePdfAndroid);
+      }
+      //FOR IOS
+      else {
+        var appDocDir = await getApplicationDocumentsDirectory();
+        var path = appDocDir.path;
+        File filePdfIOS = File('$path/${widget.fileName}.pdf');
+        await saveToStorage(filePdfIOS);
       }
     } else {
       print('capturedScreenshotImage is null');
@@ -136,15 +127,13 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
       )),
     )
         .then((capturedImage) async {
-      final tempDirectory = await getTemporaryDirectory();
-      File file = File('${tempDirectory.path}/${widget.fileName}.jpg');
-      print(file.path);
+      // final tempDirectory = await getTemporaryDirectory();
+      // File file = File('${tempDirectory.path}/${widget.fileName}.jpg');
+      // print(file.path);
 
       setState(() {
         capturedScreenshotImage = capturedImage;
-        appDirectory = file.path;
       });
-      print(appDirectory);
     });
   }
 
@@ -195,18 +184,25 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
                             onPressed: () async {
-                              await ImageGallerySaver.saveImage(
-                                  capturedScreenshotImage!,
-                                  name: widget.fileName);
-                              // if (await requestPermission(Permission.storage)) {
-                              //   await GallerySaver.saveImage(appDirectory!);
-                              // } else {
-                              //   print('permission for storage');
-                              //   print(await Permission.storage.isGranted);
-                              //   await Permission.storage.request();
-                              // }
+                              if (await requestPermission(Permission.storage)) {
+                                await ImageGallerySaver.saveImage(
+                                    capturedScreenshotImage!,
+                                    name: widget.fileName);
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Vision Board has been successfully saved to gallery')));
+                                print('Vision Board Saved');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Permission not granted')));
+                                print('permission not granted');
+                              }
                             },
-                            child: Text(
+                            child: const Text(
                               'Save as Image',
                               textAlign: TextAlign.center,
                             )),
@@ -224,18 +220,9 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
                             onPressed: () async {
-                              if (await Permission.storage
-                                  .request()
-                                  .isGranted) {
-                                print('inside');
-                                await convertToPdfAndSave();
-                                // Either the permission was already granted before or the user just granted it.
-                              } else {
-                                print('outside');
-                                await convertToPdfAndSave();
-                              }
+                              await convertToPdfAndSave();
                             },
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               'Save as PDF',
                               textAlign: TextAlign.center,
@@ -248,23 +235,6 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
               )
             : const Center(child: CircularProgressIndicator()),
       ),
-    );
-  }
-
-  AlhPdfView newMethodalhpdf() {
-    return AlhPdfView(
-      bytes: pdfDoc,
-      defaultZoomFactor: 1.3,
-      minZoom: 1.0,
-      fitPolicy: FitPolicy.width,
-      fitEachPage: false,
-      pageSnap: false,
-      onError: (error) {
-        print(error.toString());
-      },
-      onPageError: (page, error) {
-        print('$page: ${error.toString()}');
-      },
     );
   }
 }

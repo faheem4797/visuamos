@@ -72,7 +72,7 @@ class _SignUpState extends State<SignUp> {
                       textInputType: TextInputType.emailAddress,
                       validator: (value) {
                         if (_emailController.text == '') {
-                          return 'Please enter an amount';
+                          return 'Please enter an email';
                         } else if (!RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(_emailController.text)) {
@@ -126,7 +126,10 @@ class _SignUpState extends State<SignUp> {
                     ),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Create an Account',
+                          title: const Text(
+                            'Create an Account',
+                            textAlign: TextAlign.center,
+                          ),
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {

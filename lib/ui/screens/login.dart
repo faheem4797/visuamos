@@ -86,7 +86,10 @@ class _LoginState extends State<Login> {
                     ),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Login',
+                          title: const Text(
+                            'Login',
+                            textAlign: TextAlign.center,
+                          ),
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {

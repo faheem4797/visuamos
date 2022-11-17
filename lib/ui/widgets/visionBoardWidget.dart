@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,8 +61,8 @@ class _VisionBoardWidgetState extends State<VisionBoardWidget> {
                 mainAxisSpacing: 2.0,
                 crossAxisSpacing: 2.0,
                 children: imagesList.map((photo) {
-                  return Image.memory(
-                    base64Decode(photo),
+                  return Image.file(
+                    File(photo),
                     fit: BoxFit.scaleDown,
                   );
                 }).toList(),

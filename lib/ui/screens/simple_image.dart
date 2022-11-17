@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:pay/pay.dart';
 import 'package:visuamos/data/db/database.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
+import 'package:visuamos/ui/screens/sampleSimpleImage.dart';
 import 'package:visuamos/ui/screens/simple_image_preview.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
@@ -11,6 +13,8 @@ import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import '../colors/colors.dart';
 import '../widgets/CommonBottomButton.dart';
 import '../widgets/customTextFormField.dart';
+
+// TODO: COUPON SYSTEM NEED TO BE CHANGED AND preview and pay button as well
 
 class SimpleImage extends StatefulWidget {
   final int imageType;
@@ -28,6 +32,7 @@ class _SimpleImageState extends State<SimpleImage> {
   TextEditingController amountController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController couponController = TextEditingController();
+  var _paymentItems = <PaymentItem>[];
 
   void a() {}
 
@@ -135,44 +140,94 @@ class _SimpleImageState extends State<SimpleImage> {
                                             data.amount,
                                             style: TextStyle(fontSize: 22.sp),
                                           )),
-                                          DataCell(Text(
-                                            //Date
-                                            data.date,
-                                            style: TextStyle(fontSize: 22.sp),
-                                          )),
                                           DataCell(
-                                            //Prebiew Button
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
+                                            Text(
+                                              //Date
+                                              data.date,
+                                              style: TextStyle(fontSize: 22.sp),
+                                            ),
+                                          ),
+                                          DataCell(
+                                            //Preview Button
+
+                                            (data.isPaid == 0)
+                                                ? GooglePayButton(
+                                                    paymentConfigurationAsset:
+                                                        'gpay.json',
+                                                    paymentItems: _paymentItems,
+                                                    type:
+                                                        GooglePayButtonType.pay,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 15.0),
+                                                    onPaymentResult: (result) {
+                                                      print(result);
+                                                      _crudStorage.update(
+                                                          data.id!,
+                                                          //data.isPaid,
+                                                          1,
+                                                          data.imageType);
+                                                    },
+                                                    loadingIndicator:
+                                                        const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
                                                     ),
-                                                    primary: black,
-                                                    textStyle: TextStyle(
-                                                        fontSize: 24.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SimpleImagePreview(
-                                                              name: data.name,
-                                                              fileName:
-                                                                  data.name,
-                                                              date: data.date,
-                                                              amount:
-                                                                  data.amount,
-                                                              imageType: widget
-                                                                  .imageType,
-                                                            )),
-                                                  );
-                                                },
-                                                child: const Text('Preview')),
+                                                  )
+                                                : ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.r),
+                                                            ),
+                                                            primary: black,
+                                                            textStyle: TextStyle(
+                                                                fontSize: 24.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SimpleImagePreview(
+                                                                  name:
+                                                                      data.name,
+                                                                  fileName:
+                                                                      data.name,
+                                                                  date:
+                                                                      data.date,
+                                                                  amount: data
+                                                                      .amount,
+                                                                  imageType: widget
+                                                                      .imageType,
+                                                                )),
+                                                      );
+                                                    },
+                                                    child:
+                                                        const Text('Preview'),
+                                                  ),
+                                            onTap: () {
+                                              _paymentItems.add(PaymentItem(
+                                                label: (data.imageType == 0)
+                                                    ? 'Balance Slips'
+                                                    : (data.imageType == 1)
+                                                        ? 'Bank Statements'
+                                                        : 'Dream Checks',
+                                                amount: (data.imageType == 0)
+                                                    ? '3.99'
+                                                    : (data.imageType == 1)
+                                                        ? '4.99'
+                                                        : '3.99',
+                                                status: PaymentItemStatus
+                                                    .final_price,
+                                              ));
+                                            },
                                           ),
                                         ],
                                       ),
@@ -195,12 +250,50 @@ class _SimpleImageState extends State<SimpleImage> {
             Center(
               child: CommonBottomButton(
                 title: (widget.imageType == 0)
-                    ? 'Add a Balance Slip'
+                    ? const Text(
+                        'Add a Balance Slip',
+                        textAlign: TextAlign.center,
+                      )
                     : (widget.imageType == 1)
-                        ? 'Add a Bank Statement'
-                        : 'Add a Dream Check',
+                        ? const Text(
+                            'Add a Bank Statement',
+                            textAlign: TextAlign.center,
+                          )
+                        : const Text(
+                            'Add a Dream Check',
+                            textAlign: TextAlign.center,
+                          ),
                 bottomButtonCallBackFunc: () async {
                   await customModalBottomSheet(context);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: CommonBottomButton(
+                title: (widget.imageType == 0)
+                    ? const Text(
+                        'Sample Balance Slip',
+                        textAlign: TextAlign.center,
+                      )
+                    : (widget.imageType == 1)
+                        ? const Text(
+                            'Sample Bank Statement',
+                            textAlign: TextAlign.center,
+                          )
+                        : const Text(
+                            'Sample Dream Check',
+                            textAlign: TextAlign.center,
+                          ),
+                bottomButtonCallBackFunc: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SampleSimpleImage(imageType: widget.imageType)),
+                  );
                 },
               ),
             ),
@@ -330,10 +423,19 @@ class _SimpleImageState extends State<SimpleImage> {
                     Center(
                       child: CommonBottomButton(
                           title: (widget.imageType == 0)
-                              ? 'Generate Balance Slip'
+                              ? const Text(
+                                  'Generate Balance Slip',
+                                  textAlign: TextAlign.center,
+                                )
                               : (widget.imageType == 1)
-                                  ? 'Generate a Bank Statement'
-                                  : 'Generate a Dream Check',
+                                  ? const Text(
+                                      'Generate Bank Statement',
+                                      textAlign: TextAlign.center,
+                                    )
+                                  : const Text(
+                                      'Generate Dream Check',
+                                      textAlign: TextAlign.center,
+                                    ),
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {
@@ -343,6 +445,7 @@ class _SimpleImageState extends State<SimpleImage> {
                                 nameController.text,
                                 amountController.text,
                                 dateController.text,
+                                (couponController.text == 'free') ? 1 : 0,
                                 couponController.text,
                                 widget.imageType,
                               );

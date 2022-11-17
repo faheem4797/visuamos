@@ -31,7 +31,7 @@ class VisuamosDB {
     }
   }
 
-  Future<bool> addImageData(String name, String amount, String date,
+  Future<bool> addImageData(String name, String amount, String date, int isPaid,
       String coupon, int imageType) async {
     final db = _db;
     if (db == null) {
@@ -42,9 +42,33 @@ class VisuamosDB {
         'name': name,
         'amount': amount,
         'date': date,
+        'isPaid': isPaid,
         'coupon': coupon,
         'imageType': imageType
       });
+
+      _simpleImagesList = await _fetchSimpleImages(imageType);
+      _streamController.add(_simpleImagesList);
+      return true;
+    } catch (e) {
+      print('Error in adding Image Data = $e');
+      return false;
+    }
+  }
+
+  Future<bool> update(int id, int isPaid, int imageType) async {
+    final db = _db;
+    if (db == null) {
+      return false;
+    }
+    try {
+      final updateCount = await db.update(
+          'simpleImage',
+          {
+            'isPaid': isPaid,
+          },
+          where: 'id = ?',
+          whereArgs: [id]);
 
       _simpleImagesList = await _fetchSimpleImages(imageType);
       _streamController.add(_simpleImagesList);
@@ -82,6 +106,7 @@ class VisuamosDB {
           name STRING NOT NULL,
           amount STRING NOT NULL,
           date STRING NOT NULL,
+          isPaid INTEGER NOT NULL,
           coupon STRING,
           imageType INTEGER NOT NULL
       )''';

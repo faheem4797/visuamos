@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../colors/colors.dart';
 
 class CommonBottomButton extends StatelessWidget {
-  final String title;
+  final Widget title;
   final void Function()? bottomButtonCallBackFunc;
   const CommonBottomButton(
       {Key? key, required this.title, required this.bottomButtonCallBackFunc})
@@ -16,18 +16,15 @@ class CommonBottomButton extends StatelessWidget {
       height: 85.h,
       width: 300.w,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.r),
-              ),
-              primary: black,
-              textStyle:
-                  TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
-          onPressed: bottomButtonCallBackFunc,
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-          )),
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.r),
+            ),
+            primary: black,
+            textStyle: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
+        onPressed: bottomButtonCallBackFunc,
+        child: title,
+      ),
     );
   }
 }

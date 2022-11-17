@@ -14,7 +14,6 @@ import 'package:visuamos/ui/widgets/bankStatementWidget.dart';
 import 'package:visuamos/ui/widgets/commonBottomButton.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:alh_pdf_view/lib.dart';
 import 'package:visuamos/ui/widgets/dreamCheckWidget.dart';
 import '../colors/colors.dart';
 
@@ -39,7 +38,6 @@ class SimpleImagePreview extends StatefulWidget {
 class _SimpleImagePreviewState extends State<SimpleImagePreview> {
   ScreenshotController screenshotController = ScreenshotController();
   Uint8List? capturedScreenshotImage;
-  Uint8List? pdfDoc;
   final pdf = pw.Document();
   String? appDirectory;
 
@@ -52,12 +50,31 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
     return joinedDate;
   }
 
-  saveAsPdf() async {
-    if (Platform.isAndroid) {
-      if (await requestPermission(Permission.storage)) {
-        var path = await ExternalPath.getExternalStoragePublicDirectory(
-            ExternalPath.DIRECTORY_DOCUMENTS);
-      }
+  saveToStorage(File filePdf) async {
+    if (await requestPermission(Permission.storage)) {
+      print(filePdf.path);
+      print(filePdf.exists());
+
+      final image = pw.MemoryImage(capturedScreenshotImage!);
+      pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.letter,
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Image(image),
+            ); // Center
+          }));
+      await filePdf.writeAsBytes(await pdf.save());
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Successfully saved as pdf in the External Documents directory')));
+      print('Successfully saved as pdf in the External Documents directory');
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission not granted')));
+      print('permission not granted');
     }
   }
 
@@ -65,53 +82,23 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
     if (capturedScreenshotImage != null) {
       print('screenshot not null');
       if (Platform.isAndroid) {
-        print('android');
-        if (await requestPermission(Permission.storage)) {
-          var path = await ExternalPath.getExternalStoragePublicDirectory(
-              ExternalPath.DIRECTORY_DOCUMENTS);
-          File filePdf = File('${path}/${widget.fileName}.pdf');
-          print(filePdf.path);
-          print(filePdf.exists());
-
-          final image = pw.MemoryImage(capturedScreenshotImage!);
-          pdf.addPage(pw.Page(
-              pageFormat: PdfPageFormat.letter,
-              build: (pw.Context context) {
-                return pw.Center(
-                  child: pw.Image(image),
-                ); // Center
-              }));
-          await filePdf.writeAsBytes(await pdf.save());
-
-          final pdfDocInBytes = await pdf.save();
-          setState(() {
-            pdfDoc = pdfDocInBytes;
-          });
-        } else {
-          var path = await ExternalPath.getExternalStoragePublicDirectory(
-              ExternalPath.DIRECTORY_DOCUMENTS);
-          File filePdf = File('${path}/${widget.fileName}.pdf');
-          print(filePdf.path);
-          print(await filePdf.exists());
-          final image = pw.MemoryImage(capturedScreenshotImage!);
-          pdf.addPage(pw.Page(
-              pageFormat: PdfPageFormat.letter,
-              build: (pw.Context context) {
-                return pw.Center(
-                  child: pw.Image(image),
-                ); // Center
-              }));
-          await filePdf.writeAsBytes(await pdf.save());
-          print(filePdf.path);
-          print(await filePdf.exists());
-        }
+        await getExternalStorageDirectory();
+        var path = await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOCUMENTS);
+        File filePdfAndroid = File('$path/${widget.fileName}.pdf');
+        await saveToStorage(filePdfAndroid);
+      }
+      //FOR IOS
+      else {
+        var appDocDir = await getApplicationDocumentsDirectory();
+        var path = appDocDir.path;
+        File filePdfIOS = File('$path/${widget.fileName}.pdf');
+        await saveToStorage(filePdfIOS);
       }
     } else {
       print('capturedScreenshotImage is null');
     }
   }
-
-  void saveAsImage() async {}
 
   void captureScreenshotAndConvertToPDF() async {
     await screenshotController
@@ -196,16 +183,23 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
                             onPressed: () async {
-                              await ImageGallerySaver.saveImage(
-                                  capturedScreenshotImage!,
-                                  name: widget.fileName);
-                              // if (await requestPermission(Permission.storage)) {
-                              //   await GallerySaver.saveImage(appDirectory!);
-                              // } else {
-                              //   print('permission for storage');
-                              //   print(await Permission.storage.isGranted);
-                              //   await Permission.storage.request();
-                              // }
+                              if (await requestPermission(Permission.storage)) {
+                                await ImageGallerySaver.saveImage(
+                                    capturedScreenshotImage!,
+                                    name: widget.fileName);
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Successfully saved to gallery')));
+                                print('Successfully saved to gallery');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Permission not granted')));
+                                print('permission not granted');
+                              }
                             },
                             child: Text(
                               'Save as Image',
@@ -225,16 +219,7 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
                             onPressed: () async {
-                              if (await Permission.storage
-                                  .request()
-                                  .isGranted) {
-                                print('inside');
-                                await convertToPdfAndSave();
-                                // Either the permission was already granted before or the user just granted it.
-                              } else {
-                                print('outside');
-                                await convertToPdfAndSave();
-                              }
+                              await convertToPdfAndSave();
                             },
                             child: Center(
                                 child: Text(
@@ -249,23 +234,6 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
               )
             : const Center(child: CircularProgressIndicator()),
       ),
-    );
-  }
-
-  AlhPdfView newMethodalhpdf() {
-    return AlhPdfView(
-      bytes: pdfDoc,
-      defaultZoomFactor: 1.3,
-      minZoom: 1.0,
-      fitPolicy: FitPolicy.width,
-      fitEachPage: false,
-      pageSnap: false,
-      onError: (error) {
-        print(error.toString());
-      },
-      onPageError: (page, error) {
-        print('$page: ${error.toString()}');
-      },
     );
   }
 }

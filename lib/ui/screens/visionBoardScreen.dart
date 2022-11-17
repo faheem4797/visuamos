@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:visuamos/data/db/database.dart';
 import 'package:visuamos/data/db/visionBoardDatabase.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
@@ -114,14 +117,14 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                     (data) => DataRow(
                                       cells: [
                                         DataCell(Center(
-                                          child: Image.memory(
-                                            base64Decode(data.image1),
+                                          child: Image.file(
+                                            File(data.image1),
                                             fit: BoxFit.scaleDown,
                                           ),
                                         )),
                                         DataCell(Center(
-                                          child: Image.memory(
-                                            base64Decode(data.image2),
+                                          child: Image.file(
+                                            File(data.image2),
                                             fit: BoxFit.scaleDown,
                                           ),
                                         )),
@@ -179,7 +182,10 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
             ),
             Center(
               child: CommonBottomButton(
-                title: 'Add a Vision Board',
+                title: const Text(
+                  'Add a Vision Board',
+                  textAlign: TextAlign.center,
+                ),
                 bottomButtonCallBackFunc: () async {
                   await customModalBottomSheet(context);
                 },
@@ -195,6 +201,10 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
   }
 
   customModalBottomSheet(BuildContext context) async {
+    Random random = Random();
+    String folderName = (random.nextInt(900000) + 100000).toString();
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String folderPath = '${appDocDir.path}/$folderName';
     showMaterialModalBottomSheet(
       context: context,
       builder: (context) => Scaffold(
@@ -229,38 +239,52 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                     SizedBox(height: 15.h),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Pick Images',
+                          title: const Text(
+                            'Pick Images',
+                            textAlign: TextAlign.center,
+                          ),
                           bottomButtonCallBackFunc: () async {
                             List<XFile> images = await _picker.pickMultiImage();
                             print('here');
 
                             if (images.length == 8) {
-                              final tempImage1 =
-                                  base64Encode(await images[0].readAsBytes());
-                              final tempImage2 =
-                                  base64Encode(await images[1].readAsBytes());
-                              final tempImage3 =
-                                  base64Encode(await images[2].readAsBytes());
-                              final tempImage4 =
-                                  base64Encode(await images[3].readAsBytes());
-                              final tempImage5 =
-                                  base64Encode(await images[4].readAsBytes());
-                              final tempImage6 =
-                                  base64Encode(await images[5].readAsBytes());
-                              final tempImage7 =
-                                  base64Encode(await images[6].readAsBytes());
-                              final tempImage8 =
-                                  base64Encode(await images[7].readAsBytes());
+                              File fileOne =
+                                  await File(folderPath + '/img001.jpg')
+                                      .create(recursive: true);
+                              print(fileOne.path);
+                              await fileOne
+                                  .writeAsBytes(await images[0].readAsBytes());
+                              File fileTwo = File(folderPath + '/img002.jpg');
+                              await fileTwo
+                                  .writeAsBytes(await images[1].readAsBytes());
+                              File fileThree = File(folderPath + '/img003.jpg');
+                              await fileThree
+                                  .writeAsBytes(await images[2].readAsBytes());
+                              File fileFour = File(folderPath + '/img004.jpg');
+                              await fileFour
+                                  .writeAsBytes(await images[3].readAsBytes());
+                              File fileFive = File(folderPath + '/img005.jpg');
+                              await fileFive
+                                  .writeAsBytes(await images[4].readAsBytes());
+                              File fileSix = File(folderPath + '/img006.jpg');
+                              await fileSix
+                                  .writeAsBytes(await images[5].readAsBytes());
+                              File fileSeven = File(folderPath + '/img007.jpg');
+                              await fileSeven
+                                  .writeAsBytes(await images[6].readAsBytes());
+                              File fileEight = File(folderPath + '/img008.jpg');
+                              await fileEight
+                                  .writeAsBytes(await images[7].readAsBytes());
 
                               setState(() {
-                                image1 = tempImage1;
-                                image2 = tempImage2;
-                                image3 = tempImage3;
-                                image4 = tempImage4;
-                                image5 = tempImage5;
-                                image6 = tempImage6;
-                                image7 = tempImage7;
-                                image8 = tempImage8;
+                                image1 = fileOne.path;
+                                image2 = fileTwo.path;
+                                image3 = fileThree.path;
+                                image4 = fileFour.path;
+                                image5 = fileFive.path;
+                                image6 = fileSix.path;
+                                image7 = fileSeven.path;
+                                image8 = fileEight.path;
                               });
                             }
                           }),
@@ -276,7 +300,10 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                     SizedBox(height: 15.h),
                     Center(
                       child: CommonBottomButton(
-                          title: 'Generate a Vision Board',
+                          title: const Text(
+                            'Generate a Vision Board',
+                            textAlign: TextAlign.center,
+                          ),
                           bottomButtonCallBackFunc: () async {
                             final isValid = formKey.currentState?.validate();
                             if (isValid == true) {
@@ -298,7 +325,8 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                         image6!,
                                         image7!,
                                         image8!,
-                                        fileNameController.text);
+                                        fileNameController.text
+                                            .replaceAll(" ", ""));
                                 print(a);
                                 setState(() {
                                   fileNameController.clear();

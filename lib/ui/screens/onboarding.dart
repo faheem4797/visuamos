@@ -44,7 +44,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
                   const SizedBox(height: 20),
                   CommonBottomButton(
-                      title: 'Get Started',
+                      title: const Text(
+                        'Get Started',
+                        textAlign: TextAlign.center,
+                      ),
                       bottomButtonCallBackFunc: () {
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) => Login()));
