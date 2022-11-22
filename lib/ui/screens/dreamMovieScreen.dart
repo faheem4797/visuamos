@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:math';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image/image.dart' as img;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'package:screenshot/screenshot.dart';
 import 'package:visuamos/data/db/movieDatabase.dart';
 import 'package:visuamos/data/models/dreamMovieData.dart';
 import 'package:visuamos/ui/screens/dreamMoviePreview.dart';
+import 'package:visuamos/ui/screens/sample_dream_movie.dart';
+import 'package:visuamos/ui/screens/sample_vision_board.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -29,6 +32,7 @@ class DreamMovieScreen extends StatefulWidget {
 }
 
 class _DreamMovieScreenState extends State<DreamMovieScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
   late final DreamMovieDB _crudStorage;
   final ImagePicker _picker = ImagePicker();
   String? image1;
@@ -66,10 +70,9 @@ class _DreamMovieScreenState extends State<DreamMovieScreen> {
     ///data/user/0/com.garza.visuamos/app_flutter/393267/audio.mp3
   }
 
-  @override
-  void initState() {
+  init() async {
     _crudStorage = DreamMovieDB(dbName: 'dreamMoviedb.sqlite');
-    _crudStorage.open();
+    _crudStorage.open(user!.uid);
     //show();
     // final textSpan = TextSpan(
     //   text: 'Do you wanna build a snowman?',
@@ -86,7 +89,11 @@ class _DreamMovieScreenState extends State<DreamMovieScreen> {
       FFmpegKitConfig.setFontDirectoryList(
           ["/system/fonts", "/System/Library/Fonts"]);
     });
+  }
 
+  @override
+  void initState() {
+    init();
     super.initState();
   }
 
@@ -308,6 +315,25 @@ class _DreamMovieScreenState extends State<DreamMovieScreen> {
                 ),
                 bottomButtonCallBackFunc: () async {
                   await customModalBottomSheet(context);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: CommonBottomButton(
+                title: const Text(
+                  'Sample Dream Movie',
+                  textAlign: TextAlign.center,
+                ),
+                bottomButtonCallBackFunc: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SampleDreamMovie(),
+                    ),
+                  );
                 },
               ),
             ),
@@ -787,6 +813,7 @@ class _DreamMovieScreenState extends State<DreamMovieScreen> {
                                         //s
                                         var a = await _crudStorage
                                             .addDreamMovieData(
+                                          user!.uid,
                                           image1!,
                                           image2!,
                                           image3!,
@@ -808,6 +835,11 @@ class _DreamMovieScreenState extends State<DreamMovieScreen> {
                                           caption9Controller.text.toString(),
                                           caption10Controller.text.toString(),
                                           audio!,
+                                          (user?.uid ==
+                                                  'MsWSztJZpLSQBeRfu0yKWhismu22')
+                                              ? 1
+                                              : 0,
+                                          '', // coupon
                                         );
                                         print(a);
                                         setStateBottomSheet(() {

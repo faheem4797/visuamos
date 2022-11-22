@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class SimpleImageData {
   final int? id;
+  final String uid;
   final String name;
   final String amount;
   final String date;
@@ -10,6 +11,7 @@ class SimpleImageData {
   final int imageType;
   SimpleImageData({
     this.id,
+    required this.uid,
     required this.name,
     required this.amount,
     required this.date,
@@ -20,6 +22,7 @@ class SimpleImageData {
 
   SimpleImageData copyWith({
     int? id,
+    String? uid,
     String? name,
     String? amount,
     String? date,
@@ -29,6 +32,7 @@ class SimpleImageData {
   }) {
     return SimpleImageData(
       id: id ?? this.id,
+      uid: uid ?? this.uid,
       name: name ?? this.name,
       amount: amount ?? this.amount,
       date: date ?? this.date,
@@ -41,6 +45,7 @@ class SimpleImageData {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'uid': uid,
       'name': name,
       'amount': amount,
       'date': date,
@@ -53,6 +58,7 @@ class SimpleImageData {
   factory SimpleImageData.fromMap(Map<String, dynamic> map) {
     return SimpleImageData(
       id: map['id']?.toInt(),
+      uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       amount: map['amount']?.toString() ?? '',
       date: map['date'] ?? '',
@@ -69,7 +75,7 @@ class SimpleImageData {
 
   @override
   String toString() {
-    return 'SimpleImageData(id: $id, name: $name, amount: $amount, date: $date, isPaid: $isPaid, coupon: $coupon, imageType: $imageType)';
+    return 'SimpleImageData(id: $id, uid: $uid, name: $name, amount: $amount, date: $date, isPaid: $isPaid, coupon: $coupon, imageType: $imageType)';
   }
 
   @override
@@ -78,6 +84,7 @@ class SimpleImageData {
 
     return other is SimpleImageData &&
         other.id == id &&
+        other.uid == uid &&
         other.name == name &&
         other.amount == amount &&
         other.date == date &&
@@ -89,6 +96,7 @@ class SimpleImageData {
   @override
   int get hashCode {
     return id.hashCode ^
+        uid.hashCode ^
         name.hashCode ^
         amount.hashCode ^
         date.hashCode ^

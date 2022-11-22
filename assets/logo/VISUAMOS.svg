@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="102" height="96" viewBox="0 0 102 96">
+  <defs>
+    <clipPath id="clip-VISUAMOS">
+      <rect width="102" height="96"/>
+    </clipPath>
+  </defs>
+  <g id="VISUAMOS" clip-path="url(#clip-VISUAMOS)">
+    <rect width="102" height="96" fill="rgba(255,255,255,0)"/>
+    <g id="Group_10" data-name="Group 10" transform="translate(-2536.073 589.779)">
+      <path id="Path_14" data-name="Path 14" d="M2588.182-585.742l-51.108,21.674,13.043,50.943,38.066,19.033,37.406-22.948L2626.7-563.1C2626.7-562.794,2588.182-585.742,2588.182-585.742Z" transform="translate(0 -1.069)" fill="none" stroke="#2c1c26" stroke-width="0.8"/>
+      <path id="Path_15" data-name="Path 15" d="M2563.684-587.779,2553.613-521.1l41.2,15.566,50.943-24.528-24.2-42.288Z" transform="translate(-8.686)" fill="none" stroke="#2c1c26" stroke-width="0.8"/>
+      <path id="Path_16" data-name="Path 16" d="M2547-574.169h59.128l20.282,40.259-9.74,29.387-52.689,10.708-26.556-40.094Z" transform="translate(-0.183 -7.147)" fill="none" stroke="#2c1c26" stroke-width="0.8"/>
+      <text id="VISUAMOS-2" data-name="VISUAMOS" transform="translate(2552.573 -541.658)" fill="#113126" stroke="#3a0e43" stroke-width="0.3" font-size="7" font-family="Sitka Small" font-weight="600" letter-spacing="0.5em"><tspan x="0" y="0">VISUAMOS</tspan></text>
+    </g>
+  </g>
+</svg>

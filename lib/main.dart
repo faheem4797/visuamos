@@ -37,6 +37,6 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
           );
         },
-        child: Dashboard());
+        child: Login());
   }
 }

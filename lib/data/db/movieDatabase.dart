@@ -13,17 +13,17 @@ class DreamMovieDB {
 
   DreamMovieDB({required this.dbName});
 
-  Future<List<DreamMovieData>> _fetchDreamMovies() async {
+  Future<List<DreamMovieData>> _fetchDreamMovies(String uid) async {
     final db = _db;
     if (db == null) {
       return [];
     }
     try {
-      final read = await db.query('dreamMovie', orderBy: 'id DESC');
+      final read = await db.query('dreamMovie',
+          where: 'uid = ?', whereArgs: [uid], orderBy: 'id DESC');
       List<DreamMovieData> imagesList = read.isNotEmpty
           ? read.map((c) => DreamMovieData.fromMap(c)).toList()
           : [];
-      print('4');
       return imagesList;
     } catch (e) {
       print('Error fetching Movie Data from DB = $e');
@@ -32,34 +32,37 @@ class DreamMovieDB {
   }
 
   Future<bool> addDreamMovieData(
-    String image1,
-    String image2,
-    String image3,
-    String image4,
-    String image5,
-    String image6,
-    String image7,
-    String image8,
-    String image9,
-    String image10,
-    String caption1,
-    String caption2,
-    String caption3,
-    String caption4,
-    String caption5,
-    String caption6,
-    String caption7,
-    String caption8,
-    String caption9,
-    String caption10,
-    String audio,
-  ) async {
+      String uid,
+      String image1,
+      String image2,
+      String image3,
+      String image4,
+      String image5,
+      String image6,
+      String image7,
+      String image8,
+      String image9,
+      String image10,
+      String caption1,
+      String caption2,
+      String caption3,
+      String caption4,
+      String caption5,
+      String caption6,
+      String caption7,
+      String caption8,
+      String caption9,
+      String caption10,
+      String audio,
+      int isPaid,
+      String coupon) async {
     final db = _db;
     if (db == null) {
       return false;
     }
     try {
       final id = await db.insert('dreamMovie', {
+        'uid': uid,
         'image1': image1,
         'image2': image2,
         'image3': image3,
@@ -81,13 +84,38 @@ class DreamMovieDB {
         'caption9': caption9,
         'caption10': caption10,
         'audio': audio,
+        'isPaid': isPaid,
+        'coupon': coupon
       });
 
-      _dreamMoviesList = await _fetchDreamMovies();
+      _dreamMoviesList = await _fetchDreamMovies(uid);
       _streamController.add(_dreamMoviesList);
       return true;
     } catch (e) {
       print('Error in adding Image Data = $e');
+      return false;
+    }
+  }
+
+  Future<bool> update(int id, String uid, int isPaid) async {
+    final db = _db;
+    if (db == null) {
+      return false;
+    }
+    try {
+      final updateCount = await db.update(
+          'dreamMovie',
+          {
+            'isPaid': isPaid,
+          },
+          where: 'id = ?',
+          whereArgs: [id]);
+
+      _dreamMoviesList = await _fetchDreamMovies(uid);
+      _streamController.add(_dreamMoviesList);
+      return true;
+    } catch (e) {
+      print('Error in updating Movie Data = $e');
       return false;
     }
   }
@@ -101,7 +129,7 @@ class DreamMovieDB {
     return true;
   }
 
-  Future<bool> open() async {
+  Future<bool> open(String uid) async {
     if (_db != null) {
       return true;
     }
@@ -116,6 +144,7 @@ class DreamMovieDB {
 
       const create = '''CREATE TABLE IF NOT EXISTS dreamMovie(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          uid STRING NOT NULL,
           image1 STRING NOT NULL,
           image2 STRING NOT NULL,
           image3 STRING NOT NULL,
@@ -136,12 +165,14 @@ class DreamMovieDB {
           caption8 STRING NOT NULL,
           caption9 STRING NOT NULL,
           caption10 STRING NOT NULL,
-          audio STRING NOT NULL
+          audio STRING NOT NULL,
+          isPaid INTEGER NOT NULL,
+          coupon STRING
       )''';
       await db.execute(create);
 
       // read all data
-      final dreamMoviesList = await _fetchDreamMovies();
+      final dreamMoviesList = await _fetchDreamMovies(uid);
       _dreamMoviesList = dreamMoviesList;
       _streamController.add(_dreamMoviesList);
       return true;

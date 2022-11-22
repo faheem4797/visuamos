@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
@@ -13,14 +12,18 @@ class VisuamosDB {
 
   VisuamosDB({required this.dbName});
 
-  Future<List<SimpleImageData>> _fetchSimpleImages(int imageType) async {
+  Future<List<SimpleImageData>> _fetchSimpleImages(
+      int imageType, String uid) async {
     final db = _db;
     if (db == null) {
       return [];
     }
     try {
       final read = await db.query('simpleImage',
-          where: 'imageType = ?', whereArgs: [imageType], orderBy: 'id DESC');
+          where: 'imageType = ? and uid = ?',
+          whereArgs: [imageType, uid],
+          orderBy: 'id DESC');
+      print(read);
       List<SimpleImageData> imagesList = read.isNotEmpty
           ? read.map((c) => SimpleImageData.fromMap(c)).toList()
           : [];
@@ -31,14 +34,15 @@ class VisuamosDB {
     }
   }
 
-  Future<bool> addImageData(String name, String amount, String date, int isPaid,
-      String coupon, int imageType) async {
+  Future<bool> addImageData(String uid, String name, String amount, String date,
+      int isPaid, String coupon, int imageType) async {
     final db = _db;
     if (db == null) {
       return false;
     }
     try {
       final id = await db.insert('simpleImage', {
+        'uid': uid,
         'name': name,
         'amount': amount,
         'date': date,
@@ -47,7 +51,7 @@ class VisuamosDB {
         'imageType': imageType
       });
 
-      _simpleImagesList = await _fetchSimpleImages(imageType);
+      _simpleImagesList = await _fetchSimpleImages(imageType, uid);
       _streamController.add(_simpleImagesList);
       return true;
     } catch (e) {
@@ -56,7 +60,7 @@ class VisuamosDB {
     }
   }
 
-  Future<bool> update(int id, int isPaid, int imageType) async {
+  Future<bool> update(int id, String uid, int isPaid, int imageType) async {
     final db = _db;
     if (db == null) {
       return false;
@@ -70,11 +74,11 @@ class VisuamosDB {
           where: 'id = ?',
           whereArgs: [id]);
 
-      _simpleImagesList = await _fetchSimpleImages(imageType);
+      _simpleImagesList = await _fetchSimpleImages(imageType, uid);
       _streamController.add(_simpleImagesList);
       return true;
     } catch (e) {
-      print('Error in adding Image Data = $e');
+      print('Error in updating Image Data = $e');
       return false;
     }
   }
@@ -88,7 +92,7 @@ class VisuamosDB {
     return true;
   }
 
-  Future<bool> open(int imageType) async {
+  Future<bool> open(int imageType, String uid) async {
     if (_db != null) {
       return true;
     }
@@ -103,6 +107,7 @@ class VisuamosDB {
 
       const create = '''CREATE TABLE IF NOT EXISTS simpleImage(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          uid STRING NOT NULL,
           name STRING NOT NULL,
           amount STRING NOT NULL,
           date STRING NOT NULL,
@@ -113,7 +118,7 @@ class VisuamosDB {
       await db.execute(create);
 
       // read all data
-      final simpleImagesList = await _fetchSimpleImages(imageType);
+      final simpleImagesList = await _fetchSimpleImages(imageType, uid);
       _simpleImagesList = simpleImagesList;
       _streamController.add(_simpleImagesList);
       return true;

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class DreamMovieData {
   final int? id;
+  final String uid;
   final String image1;
   final String image2;
   final String image3;
@@ -23,8 +24,11 @@ class DreamMovieData {
   final String caption9;
   final String caption10;
   final String audio;
+  final int isPaid;
+  final String coupon;
   DreamMovieData({
     this.id,
+    required this.uid,
     required this.image1,
     required this.image2,
     required this.image3,
@@ -46,10 +50,13 @@ class DreamMovieData {
     required this.caption9,
     required this.caption10,
     required this.audio,
+    required this.isPaid,
+    required this.coupon,
   });
 
   DreamMovieData copyWith({
     int? id,
+    String? uid,
     String? image1,
     String? image2,
     String? image3,
@@ -71,9 +78,12 @@ class DreamMovieData {
     String? caption9,
     String? caption10,
     String? audio,
+    int? isPaid,
+    String? coupon,
   }) {
     return DreamMovieData(
       id: id ?? this.id,
+      uid: uid ?? this.uid,
       image1: image1 ?? this.image1,
       image2: image2 ?? this.image2,
       image3: image3 ?? this.image3,
@@ -95,12 +105,15 @@ class DreamMovieData {
       caption9: caption9 ?? this.caption9,
       caption10: caption10 ?? this.caption10,
       audio: audio ?? this.audio,
+      isPaid: isPaid ?? this.isPaid,
+      coupon: coupon ?? this.coupon,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'uid': uid,
       'image1': image1,
       'image2': image2,
       'image3': image3,
@@ -122,12 +135,15 @@ class DreamMovieData {
       'caption9': caption9,
       'caption10': caption10,
       'audio': audio,
+      'isPaid': isPaid,
+      'coupon': coupon,
     };
   }
 
   factory DreamMovieData.fromMap(Map<String, dynamic> map) {
     return DreamMovieData(
       id: map['id']?.toInt(),
+      uid: map['uid'] ?? '',
       image1: map['image1'] ?? '',
       image2: map['image2'] ?? '',
       image3: map['image3'] ?? '',
@@ -149,6 +165,8 @@ class DreamMovieData {
       caption9: map['caption9'] ?? '',
       caption10: map['caption10'] ?? '',
       audio: map['audio'] ?? '',
+      isPaid: map['isPaid']?.toInt() ?? 0,
+      coupon: map['coupon'] ?? '',
     );
   }
 
@@ -159,7 +177,7 @@ class DreamMovieData {
 
   @override
   String toString() {
-    return 'DreamMovieData(id: $id, image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, image9: $image9, image10: $image10, caption1: $caption1, caption2: $caption2, caption3: $caption3, caption4: $caption4, caption5: $caption5, caption6: $caption6, caption7: $caption7, caption8: $caption8, caption9: $caption9, caption10: $caption10, audio: $audio)';
+    return 'DreamMovieData(id: $id, uid: $uid, image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, image9: $image9, image10: $image10, caption1: $caption1, caption2: $caption2, caption3: $caption3, caption4: $caption4, caption5: $caption5, caption6: $caption6, caption7: $caption7, caption8: $caption8, caption9: $caption9, caption10: $caption10, audio: $audio, isPaid: $isPaid, coupon: $coupon)';
   }
 
   @override
@@ -168,6 +186,7 @@ class DreamMovieData {
 
     return other is DreamMovieData &&
         other.id == id &&
+        other.uid == uid &&
         other.image1 == image1 &&
         other.image2 == image2 &&
         other.image3 == image3 &&
@@ -188,12 +207,15 @@ class DreamMovieData {
         other.caption8 == caption8 &&
         other.caption9 == caption9 &&
         other.caption10 == caption10 &&
-        other.audio == audio;
+        other.audio == audio &&
+        other.isPaid == isPaid &&
+        other.coupon == coupon;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
+        uid.hashCode ^
         image1.hashCode ^
         image2.hashCode ^
         image3.hashCode ^
@@ -214,6 +236,8 @@ class DreamMovieData {
         caption8.hashCode ^
         caption9.hashCode ^
         caption10.hashCode ^
-        audio.hashCode;
+        audio.hashCode ^
+        isPaid.hashCode ^
+        coupon.hashCode;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,8 @@ class SimpleImage extends StatefulWidget {
 }
 
 class _SimpleImageState extends State<SimpleImage> {
+  final User? user = FirebaseAuth.instance.currentUser;
+
   late final VisuamosDB _crudStorage;
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
@@ -34,16 +37,18 @@ class _SimpleImageState extends State<SimpleImage> {
   TextEditingController couponController = TextEditingController();
   var _paymentItems = <PaymentItem>[];
 
-  void a() {}
+  void init() async {
+    _crudStorage = VisuamosDB(dbName: 'visuamosdb.sqlite');
+    (widget.imageType == 0)
+        ? _crudStorage.open(0, user!.uid)
+        : (widget.imageType == 1)
+            ? _crudStorage.open(1, user!.uid)
+            : _crudStorage.open(2, user!.uid);
+  }
 
   @override
   void initState() {
-    _crudStorage = VisuamosDB(dbName: 'visuamosdb.sqlite');
-    (widget.imageType == 0)
-        ? _crudStorage.open(0)
-        : (widget.imageType == 1)
-            ? _crudStorage.open(1)
-            : _crudStorage.open(2);
+    init();
     super.initState();
   }
 
@@ -164,6 +169,7 @@ class _SimpleImageState extends State<SimpleImage> {
                                                       print(result);
                                                       _crudStorage.update(
                                                           data.id!,
+                                                          user!.uid,
                                                           //data.isPaid,
                                                           1,
                                                           data.imageType);
@@ -442,10 +448,14 @@ class _SimpleImageState extends State<SimpleImage> {
                               formKey.currentState?.save();
 
                               var a = await _crudStorage.addImageData(
+                                user!.uid,
                                 nameController.text,
                                 amountController.text,
                                 dateController.text,
-                                (couponController.text == 'free') ? 1 : 0,
+                                (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
+                                    ? 1
+                                    : 0,
+                                //(couponController.text == 'free') ? 1 : 0,
                                 couponController.text,
                                 widget.imageType,
                               );

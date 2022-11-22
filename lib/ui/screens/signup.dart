@@ -111,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                       textInputType: TextInputType.text,
                       obscureText: true,
                       validator: (value) {
-                        if (_passwordController.text == '') {
+                        if (_confirmPasswordController.text == '') {
                           return 'Please enter a password';
                         } else if (_passwordController.text !=
                             _confirmPasswordController.text) {

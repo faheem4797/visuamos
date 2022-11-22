@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 class VisionBoardData {
   final int? id;
+  final String uid;
   final String image1;
   final String image2;
   final String image3;
@@ -12,8 +13,11 @@ class VisionBoardData {
   final String image7;
   final String image8;
   final String fileName;
+  final int isPaid;
+  final String coupon;
   VisionBoardData({
     this.id,
+    required this.uid,
     required this.image1,
     required this.image2,
     required this.image3,
@@ -23,10 +27,13 @@ class VisionBoardData {
     required this.image7,
     required this.image8,
     required this.fileName,
+    required this.isPaid,
+    required this.coupon,
   });
 
   VisionBoardData copyWith({
     int? id,
+    String? uid,
     String? image1,
     String? image2,
     String? image3,
@@ -36,9 +43,12 @@ class VisionBoardData {
     String? image7,
     String? image8,
     String? fileName,
+    int? isPaid,
+    String? coupon,
   }) {
     return VisionBoardData(
       id: id ?? this.id,
+      uid: uid ?? this.uid,
       image1: image1 ?? this.image1,
       image2: image2 ?? this.image2,
       image3: image3 ?? this.image3,
@@ -48,12 +58,15 @@ class VisionBoardData {
       image7: image7 ?? this.image7,
       image8: image8 ?? this.image8,
       fileName: fileName ?? this.fileName,
+      isPaid: isPaid ?? this.isPaid,
+      coupon: coupon ?? this.coupon,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'uid': uid,
       'image1': image1,
       'image2': image2,
       'image3': image3,
@@ -63,12 +76,15 @@ class VisionBoardData {
       'image7': image7,
       'image8': image8,
       'fileName': fileName,
+      'isPaid': isPaid,
+      'coupon': coupon,
     };
   }
 
   factory VisionBoardData.fromMap(Map<String, dynamic> map) {
     return VisionBoardData(
       id: map['id']?.toInt(),
+      uid: map['uid'] ?? '',
       image1: map['image1'] ?? '',
       image2: map['image2'] ?? '',
       image3: map['image3'] ?? '',
@@ -78,6 +94,8 @@ class VisionBoardData {
       image7: map['image7'] ?? '',
       image8: map['image8'] ?? '',
       fileName: map['fileName'] ?? '',
+      isPaid: map['isPaid']?.toInt() ?? 0,
+      coupon: map['coupon'] ?? '',
     );
   }
 
@@ -88,7 +106,7 @@ class VisionBoardData {
 
   @override
   String toString() {
-    return 'VisionBoardData(id: $id, image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, fileName: $fileName)';
+    return 'VisionBoardData(id: $id, uid: $uid, image1: $image1, image2: $image2, image3: $image3, image4: $image4, image5: $image5, image6: $image6, image7: $image7, image8: $image8, fileName: $fileName, isPaid: $isPaid, coupon: $coupon)';
   }
 
   @override
@@ -97,6 +115,7 @@ class VisionBoardData {
 
     return other is VisionBoardData &&
         other.id == id &&
+        other.uid == uid &&
         other.image1 == image1 &&
         other.image2 == image2 &&
         other.image3 == image3 &&
@@ -105,12 +124,15 @@ class VisionBoardData {
         other.image6 == image6 &&
         other.image7 == image7 &&
         other.image8 == image8 &&
-        other.fileName == fileName;
+        other.fileName == fileName &&
+        other.isPaid == isPaid &&
+        other.coupon == coupon;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
+        uid.hashCode ^
         image1.hashCode ^
         image2.hashCode ^
         image3.hashCode ^
@@ -119,6 +141,8 @@ class VisionBoardData {
         image6.hashCode ^
         image7.hashCode ^
         image8.hashCode ^
-        fileName.hashCode;
+        fileName.hashCode ^
+        isPaid.hashCode ^
+        coupon.hashCode;
   }
 }

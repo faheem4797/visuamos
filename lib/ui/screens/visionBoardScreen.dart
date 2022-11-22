@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,7 @@ import 'package:visuamos/data/db/database.dart';
 import 'package:visuamos/data/db/visionBoardDatabase.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
 import 'package:visuamos/data/models/visionBoardData.dart';
+import 'package:visuamos/ui/screens/sample_vision_board.dart';
 import 'package:visuamos/ui/screens/simple_image_preview.dart';
 import 'package:visuamos/ui/screens/visionBoardPreview.dart';
 import 'package:visuamos/ui/utils.dart';
@@ -28,6 +30,7 @@ class VisionBoardScreen extends StatefulWidget {
 }
 
 class _VisionBoardScreenState extends State<VisionBoardScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
   late final VisionBoardDB _crudStorage;
   final ImagePicker _picker = ImagePicker();
   String? image1;
@@ -41,10 +44,14 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
   final formKey = GlobalKey<FormState>();
   TextEditingController fileNameController = TextEditingController();
 
+  init() async {
+    _crudStorage = VisionBoardDB(dbName: 'visionBoarddb.sqlite');
+    _crudStorage.open(user!.uid);
+  }
+
   @override
   void initState() {
-    _crudStorage = VisionBoardDB(dbName: 'visionBoarddb.sqlite');
-    _crudStorage.open();
+    init();
     super.initState();
   }
 
@@ -194,6 +201,25 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
             const SizedBox(
               height: 10,
             ),
+            Center(
+              child: CommonBottomButton(
+                title: const Text(
+                  'Sample Vision Board',
+                  textAlign: TextAlign.center,
+                ),
+                bottomButtonCallBackFunc: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SampleVisionBoard(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
@@ -317,16 +343,21 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
                                   image8 != null) {
                                 var a =
                                     await _crudStorage.addVisionBoardImageData(
-                                        image1!,
-                                        image2!,
-                                        image3!,
-                                        image4!,
-                                        image5!,
-                                        image6!,
-                                        image7!,
-                                        image8!,
-                                        fileNameController.text
-                                            .replaceAll(" ", ""));
+                                  user!.uid,
+                                  image1!,
+                                  image2!,
+                                  image3!,
+                                  image4!,
+                                  image5!,
+                                  image6!,
+                                  image7!,
+                                  image8!,
+                                  fileNameController.text.replaceAll(" ", ""),
+                                  (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
+                                      ? 1
+                                      : 0,
+                                  '', // coupon
+                                );
                                 print(a);
                                 setState(() {
                                   fileNameController.clear();
