@@ -17,7 +17,7 @@ class _SampleDreamMovieState extends State<SampleDreamMovie> {
   audioInit() async {
     await audioPlayer.setAsset('assets/dreamMovie/sample.mp3');
     await audioPlayer.setLoopMode(LoopMode.one);
-    await audioPlayer.play();
+    audioPlayer.play();
     if (!mounted) return;
     setState(() {
       ready = true;
@@ -85,6 +85,7 @@ class _SampleDreamMovieState extends State<SampleDreamMovie> {
                               'img009.jpg',
                               'img010.jpg'
                             ].map((i) {
+                              print(i);
                               return Center(
                                 child: Image.asset(
                                   'assets/dreamMovie/$i',

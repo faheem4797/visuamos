@@ -1,27 +1,20 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:external_path/external_path.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:video_player/video_player.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
-import 'package:chewie/chewie.dart';
 import '../colors/colors.dart';
 
 class DreamMoviePreview extends StatefulWidget {
@@ -310,6 +303,7 @@ class _DreamMoviePreviewState extends State<DreamMoviePreview> {
                             'img009.jpg',
                             'img010.jpg'
                           ].map((i) {
+                            print(widget.folderName + i);
                             return Center(
                               child: Image.file(
                                 File(widget.folderName + i),
@@ -340,7 +334,7 @@ class _DreamMoviePreviewState extends State<DreamMoviePreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                primary: black,
+                                backgroundColor: black,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),

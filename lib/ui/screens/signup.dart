@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/screens/dashboard.dart';
 import 'package:visuamos/ui/screens/login.dart';
@@ -23,6 +24,18 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  Future<void> _launchURL() async {
+    const url =
+        'https://github.com/visuamos/visuamos-policy/blob/main/privacy-policy.md';
+    final uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.platformDefault,
+    )) {
+      throw "Can not launch url";
+    }
+  }
 
   @override
   void dispose() {
@@ -123,6 +136,35 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(
                       height: 40,
+                    ),
+                    Center(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            const TextSpan(
+                                text:
+                                    'By clicking Create an Account, you agree to and have read our ',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 16)),
+                            TextSpan(
+                                style: const TextStyle(
+                                    color: darkBlue, fontSize: 16),
+                                text: 'Privacy Policy',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    await _launchURL();
+                                  }),
+                            const TextSpan(
+                                text: '.',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
                     Center(
                       child: CommonBottomButton(
