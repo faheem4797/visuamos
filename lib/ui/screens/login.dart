@@ -52,11 +52,11 @@ class _LoginState extends State<Login> {
                       textInputType: TextInputType.emailAddress,
                       validator: (value) {
                         if (_emailController.text == '') {
-                          return 'Please enter an amount';
+                          return 'Please enter an email';
                         } else if (!RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(_emailController.text)) {
-                          return 'Please enter a valid amount';
+                          return 'Please enter a valid email';
                         } else {
                           return null;
                         }
