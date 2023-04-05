@@ -62,8 +62,8 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
                     );
 
                     if (userReauthenticated.user?.email == email) {
-                      user.delete();
-                      AuthService().signOut();
+                      await user.delete();
+                      await AuthService().signOut();
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => Login()),
                           (Route<dynamic> route) => false);
@@ -128,11 +128,6 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
                         User? user = await FirebaseAuth.instance.currentUser;
                         if (user != null) {
                           openDialog(context);
-                          // user.delete();
-                          // AuthService().signOut();
-                          // Navigator.of(context).pushAndRemoveUntil(
-                          //     MaterialPageRoute(builder: (context) => Login()),
-                          //     (Route<dynamic> route) => false);
                         }
                       } else {
                         callBackFunc!();
