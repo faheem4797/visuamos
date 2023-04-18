@@ -44,7 +44,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app requires access to the photo library so you can select the images to be used for vision boards or dream movies.</string>
+	<string>This app requires access to the photo library so you can select the images to be used for vision boards or dream movies.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires camera access to scan card details.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 </dict>
