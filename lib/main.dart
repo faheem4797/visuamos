@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
               inputDecorationTheme: const InputDecorationTheme(
                 floatingLabelStyle: TextStyle(color: darkBlue),
               ),
-              fontFamily: 'Merriweather',
+              fontFamily: 'OpenSans',
             ),
             home: child,
             debugShowCheckedModeBanner: false,

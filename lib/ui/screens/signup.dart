@@ -1,14 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/screens/dashboard.dart';
 import 'package:visuamos/ui/screens/login.dart';
-import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:visuamos/ui/widgets/customTextFormField.dart';
 
 import '../../services/authService.dart';
-import '../widgets/CommonBottomButton.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -24,6 +24,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   Future<void> _launchURL() async {
     const url =
@@ -50,179 +51,251 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const AppBarEveryWhere(
-          title: 'Sign Up',
-          isIconRequired: false,
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomTextFormField(
-                      controller: _nameController,
-                      hintText: 'Enter your name here',
-                      labelText: 'Name',
-                      validator: (value) {
-                        if (_nameController.text == '') {
-                          return 'Please enter a name';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: _emailController,
-                      hintText: 'Enter your email here',
-                      labelText: 'Email',
-                      textInputType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (_emailController.text == '') {
-                          return 'Please enter an email';
-                        } else if (!RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(_emailController.text)) {
-                          return 'Please enter a valid amount';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: _passwordController,
-                      hintText: 'Enter your password here',
-                      labelText: 'Password',
-                      textInputType: TextInputType.text,
-                      obscureText: true,
-                      validator: (value) {
-                        if (_passwordController.text == '') {
-                          return 'Please enter a password';
-                        } else if (_passwordController.text.length < 8) {
-                          return 'Password should atleast be 8 characters long';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: _confirmPasswordController,
-                      hintText: 'Please re-enter your password here',
-                      labelText: 'Confirm Password',
-                      textInputType: TextInputType.text,
-                      obscureText: true,
-                      validator: (value) {
-                        if (_confirmPasswordController.text == '') {
-                          return 'Please enter a password';
-                        } else if (_passwordController.text !=
-                            _confirmPasswordController.text) {
-                          return "Password doesn't match";
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Center(
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            const TextSpan(
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [lightBlueGradient, purpleGradient])),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Make Your Dreams Come True',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 34.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Image.asset(
+                        'assets/logo/logo510.png',
+                        fit: BoxFit.fitHeight,
+                        height: 150.h,
+                      ),
+                      SizedBox(height: 30.h),
+                      CustomTextFormField(
+                        controller: _nameController,
+                        hintText: 'Enter your name here',
+                        labelText: 'Name',
+                        validator: (value) {
+                          if (_nameController.text == '') {
+                            return 'Please enter a name';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CustomTextFormField(
+                        controller: _emailController,
+                        hintText: 'Enter your email here',
+                        labelText: 'Email',
+                        textInputType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (_emailController.text == '') {
+                            return 'Please enter an email';
+                          } else if (!RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(_emailController.text)) {
+                            return 'Please enter a valid amount';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CustomTextFormField(
+                        controller: _passwordController,
+                        hintText: 'Enter your password here',
+                        labelText: 'Password',
+                        textInputType: TextInputType.text,
+                        obscureText: true,
+                        validator: (value) {
+                          if (_passwordController.text == '') {
+                            return 'Please enter a password';
+                          } else if (_passwordController.text.length < 8) {
+                            return 'Password should atleast be 8 characters long';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CustomTextFormField(
+                        controller: _confirmPasswordController,
+                        hintText: 'Please re-enter your password here',
+                        labelText: 'Confirm Password',
+                        textInputType: TextInputType.text,
+                        obscureText: true,
+                        validator: (value) {
+                          if (_confirmPasswordController.text == '') {
+                            return 'Please enter a password';
+                          } else if (_passwordController.text !=
+                              _confirmPasswordController.text) {
+                            return "Password doesn't match";
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      Center(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
                                 text:
                                     'By clicking Create an Account, you agree to and have read our ',
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 16)),
-                            TextSpan(
-                                style: const TextStyle(
-                                    color: darkBlue, fontSize: 16),
-                                text: 'Privacy Policy',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    await _launchURL();
-                                  }),
-                            const TextSpan(
-                                text: '.',
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 16)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Center(
-                      child: CommonBottomButton(
-                          title: const Text(
-                            'Create an Account',
-                            textAlign: TextAlign.center,
+                                style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                  color: white,
+                                  fontSize: 15.sp,
+                                  //fontWeight: FontWeight.bold,
+                                )),
+                              ),
+                              TextSpan(
+                                  style: TextStyle(
+                                    color: black,
+                                    fontSize: 15.sp,
+                                  ),
+                                  text: 'Privacy Policy',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      await _launchURL();
+                                    }),
+                              TextSpan(
+                                  text: '.',
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 16.sp)),
+                            ],
                           ),
-                          bottomButtonCallBackFunc: () async {
-                            final isValid = formKey.currentState?.validate();
-                            if (isValid == true) {
-                              formKey.currentState?.save();
-                              print('message');
-                              final message = await AuthService().registration(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              );
-                              print(message);
-                              if (message!.contains('Success')) {
-                                if (!mounted) return;
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Dashboard()));
-                              }
-                              if (!mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                ),
-                              );
-                            }
-                          }),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            const TextSpan(
-                                text: 'Already have an account? ',
-                                style: TextStyle(color: black, fontSize: 16)),
-                            TextSpan(
-                                style: const TextStyle(
-                                    color: darkBlue, fontSize: 18),
-                                text: 'Login',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => Login()));
-                                  }),
-                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  bottomButtonGradientPurple,
+                                  bottomButtonGradientBlue
+                                ]),
+                            borderRadius: BorderRadius.circular(35.r),
+                          ),
+                          height: 70.h,
+                          width: 260.w,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(35.r),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                textStyle: TextStyle(
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w600)),
+                            onPressed: () async {
+                              FocusScope.of(context).unfocus();
+                              final isValid = formKey.currentState?.validate();
+                              if (isValid == true) {
+                                formKey.currentState?.save();
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                print('message');
+                                final message =
+                                    await AuthService().registration(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                                print(message);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                if (message!.contains('Success')) {
+                                  if (!mounted) return;
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Dashboard()));
+                                }
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(message),
+                                  ),
+                                );
+                              }
+                            },
+                            child: isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: white,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Create an Account',
+                                    textAlign: TextAlign.center,
+                                  ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Center(
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Already have an account? ',
+                                style: GoogleFonts.outfit(
+                                    textStyle:
+                                        TextStyle(color: white, fontSize: 16)),
+                              ),
+                              TextSpan(
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                        color: white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  text: 'Sign in',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) => Login()));
+                                    }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

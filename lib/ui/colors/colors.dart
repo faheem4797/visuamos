@@ -9,3 +9,9 @@ const Color blue = Color(0xff5869FF);
 const Color purple = Color(0xff713CEA);
 const Color white = Colors.white;
 const Color lightYellow = Color(0xffFFF5CA);
+
+const Color lightBlueGradient = Color(0xff7786FB);
+const Color purpleGradient = Color(0xffBD00FF);
+
+const Color bottomButtonGradientBlue = Color(0xff613BB2);
+const Color bottomButtonGradientPurple = Color(0xff8908EE);

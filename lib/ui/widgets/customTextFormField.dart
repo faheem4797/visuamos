@@ -35,12 +35,18 @@ class CustomTextFormField extends StatelessWidget {
       onTap: onTap,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkBlue, width: 3.w),
-          ),
-          hintText: hintText,
-          labelText: labelText,
-          border: const OutlineInputBorder()),
+        filled: true,
+        fillColor: white,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: lightBlueGradient, width: 3.w),
+            borderRadius: BorderRadius.all(Radius.circular(15.r))),
+        hintText: hintText,
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.r)),
+        ),
+      ),
     );
   }
 }

@@ -64,6 +64,7 @@ dependencies:
   carousel_slider: ^4.1.1
   just_audio: ^0.9.30
   url_launcher: ^6.1.7
+  google_fonts: ^4.0.4
 
 
 
@@ -130,7 +131,47 @@ flutter:
         - asset: assets/fonts/Merriweather-Light.ttf
         - asset: assets/fonts/Merriweather-LightItalic.ttf
         - asset: assets/fonts/Merriweather-Regular.ttf
-                    
+
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Bold.ttf
+        - asset: assets/fonts/OpenSans_Condensed-ExtraBold.ttf      
+        - asset: assets/fonts/OpenSans_Condensed-ExtraBoldItalic.ttf     
+        - asset: assets/fonts/OpenSans_Condensed-ExtraBoldItalic.ttf
+        - asset: assets/fonts/OpenSans_Condensed-Light.ttf
+        - asset: assets/fonts/OpenSans_Condensed-LightItalic.ttf
+        - asset: assets/fonts/OpenSans_Condensed-Medium.ttf
+        - asset: assets/fonts/OpenSans_Condensed-MediumItalic.ttf
+        - asset: assets/fonts/OpenSans_Condensed-Regular.ttf
+        - asset: assets/fonts/OpenSans_Condensed-SemiBold.ttf      
+        - asset: assets/fonts/OpenSans_Condensed-SemiBoldItalic.ttf     
+        - asset: assets/fonts/OpenSans_SemiCondensed-Bold.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-BoldItalic.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-ExtraBoldItalic.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-Italic.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-Light.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-LightItalic.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-Medium.ttf      
+        - asset: assets/fonts/OpenSans_SemiCondensed-MediumItalic.ttf     
+        - asset: assets/fonts/OpenSans_SemiCondensed-Regular.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-SemiBold.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-SemiBoldItalic.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-BoldItalic.ttf
+        - asset: assets/fonts/OpenSans-ExtraBold.ttf
+        - asset: assets/fonts/OpenSans-ExtraBoldItalic.ttf      
+        - asset: assets/fonts/OpenSans-Italic.ttf     
+        - asset: assets/fonts/OpenSans-Light.ttf
+        - asset: assets/fonts/OpenSans-LightItalic.ttf
+        - asset: assets/fonts/OpenSans-MediumItalic.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
+        - asset: assets/fonts/OpenSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/OpenSans_SemiCondensed-ExtraBold.ttf
+
+
+
+        
 
   #
   # For details regarding fonts from package dependencies,
