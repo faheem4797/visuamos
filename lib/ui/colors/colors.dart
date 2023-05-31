@@ -15,3 +15,14 @@ const Color purpleGradient = Color(0xffBD00FF);
 
 const Color bottomButtonGradientBlue = Color(0xff613BB2);
 const Color bottomButtonGradientPurple = Color(0xff8908EE);
+
+const Color dashboardButton1GradientFirst = Color(0xff51ABFF);
+const Color dashboardButton1GradientSecond = Color(0xffBD00FF);
+const Color dashboardButton2GradientFirst = Color(0xffBD00FF);
+const Color dashboardButton2GradientSecond = Color(0xffFF8951);
+const Color dashboardButton3GradientFirst = Color(0xff00FFD1);
+const Color dashboardButton3GradientSecond = Color(0xff3F5DFF);
+const Color dashboardButton4GradientFirst = Color(0xffBD00FF);
+const Color dashboardButton4GradientSecond = Color(0xffFF8951);
+const Color dashboardButton5GradientFirst = Color(0xff51ABFF);
+const Color dashboardButton5GradientSecond = Color(0xffBD00FF);
