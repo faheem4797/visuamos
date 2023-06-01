@@ -139,94 +139,109 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height / 2,
-                child: Text('fdfdf'),
+                // decoration: BoxDecoration(
+                //   gradient: LinearGradient(
+                //       begin: Alignment.bottomLeft,
+                //       end: Alignment.topRight,
+                //       colors: [
+                //         dashboardButton1GradientFirst,
+                //         dashboardButton1GradientSecond
+                //       ]),
+                //   borderRadius: BorderRadius.circular(25.r),
+                // ),
+                // child: Column(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Text('data'),
+                //     DashboardButton(
+                //         'title',
+                //         Icons.account_balance,
+                //         dashboardButton1GradientFirst,
+                //         dashboardButton1GradientSecond),
+                //     Text('data'),
+                //   ],
+                // ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    DashboardButton(
+                      'Balance Slips',
+                      'assets/dashboard/balance_slip.png',
+                      dashboardButton1GradientFirst,
+                      dashboardButton1GradientSecond,
+                      true,
+                    ),
+                    DashboardButton(
+                      'Bank Statements',
+                      'assets/dashboard/bank_statement.png',
+                      dashboardButton2GradientFirst,
+                      dashboardButton2GradientSecond,
+                      false,
+                    ),
+                    DashboardButton(
+                      'Dream Checks',
+                      'assets/dashboard/dream_check.png',
+                      dashboardButton3GradientFirst,
+                      dashboardButton3GradientSecond,
+                      false,
+                    ),
+                    DashboardButton(
+                      'Dream Movies',
+                      'assets/dashboard/dream_movie.png',
+                      dashboardButton4GradientFirst,
+                      dashboardButton4GradientSecond,
+                      false,
+                    ),
+                    DashboardButton(
+                      'Vision Boards',
+                      'assets/dashboard/vision_board.png',
+                      dashboardButton5GradientFirst,
+                      dashboardButton5GradientSecond,
+                      true,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
         )),
-        // Column(
+      ),
+    );
+  }
 
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         DashboardBoxContainer(
-        //           title: 'Balance Slips',
-        //           onTap: () {
-        //             Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const SimpleImage(
-        //                         imageType: 0,
-        //                       )),
-        //             );
-        //           },
-        //         ),
-        //         DashboardBoxContainer(
-        //           title: 'Bank Statements',
-        //           onTap: () {
-        //             Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const SimpleImage(
-        //                         imageType: 1,
-        //                       )),
-        //             );
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //     const SizedBox(
-        //       height: 20,
-        //     ),
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         DashboardBoxContainer(
-        //           title: 'Dream Checks',
-        //           onTap: () {
-        //             Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const SimpleImage(
-        //                         imageType: 2,
-        //                       )),
-        //             );
-        //           },
-        //         ),
-        //         DashboardBoxContainer(
-        //           title: 'Dream Movies',
-        //           onTap: () {
-        //             Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const DreamMovieScreen()),
-        //             );
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //     const SizedBox(
-        //       height: 20,
-        //     ),
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         DashboardBoxContainer(
-        //           title: 'Vision Boards',
-        //           onTap: () {
-        //             Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const VisionBoardScreen()),
-        //             );
-        //           },
-        //         ),
-        //       ],
-        //     )
-        //   ],
-        // ),
+  Container DashboardButton(String title, String imagePath, Color firstColor,
+      Color secondColor, bool alignUpDown) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: alignUpDown ? Alignment.topCenter : Alignment.bottomLeft,
+            end: alignUpDown ? Alignment.bottomCenter : Alignment.topRight,
+            colors: [firstColor, secondColor]),
+        borderRadius: BorderRadius.circular(25.r),
+      ),
+      height: 70.h,
+      width: 265.w,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.r),
+            ),
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            textStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+        onPressed: () async {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image.asset(
+              imagePath,
+              // width: 40.w,
+              // fit: BoxFit.fitWidth,
+            ),
+            Text(title),
+          ],
+        ),
       ),
     );
   }
