@@ -139,32 +139,11 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height / 2,
-                // decoration: BoxDecoration(
-                //   gradient: LinearGradient(
-                //       begin: Alignment.bottomLeft,
-                //       end: Alignment.topRight,
-                //       colors: [
-                //         dashboardButton1GradientFirst,
-                //         dashboardButton1GradientSecond
-                //       ]),
-                //   borderRadius: BorderRadius.circular(25.r),
-                // ),
-                // child: Column(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     Text('data'),
-                //     DashboardButton(
-                //         'title',
-                //         Icons.account_balance,
-                //         dashboardButton1GradientFirst,
-                //         dashboardButton1GradientSecond),
-                //     Text('data'),
-                //   ],
-                // ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    //TODO: Add a popup dialog for every button with 3/4 options
                     DashboardButton(
                       'Balance Slips',
                       'assets/dashboard/balance_slip.png',
