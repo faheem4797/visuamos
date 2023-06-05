@@ -26,3 +26,6 @@ const Color dashboardButton4GradientFirst = Color(0xffBD00FF);
 const Color dashboardButton4GradientSecond = Color(0xffFF8951);
 const Color dashboardButton5GradientFirst = Color(0xff51ABFF);
 const Color dashboardButton5GradientSecond = Color(0xffBD00FF);
+
+const Color purplePopupButton = Color(0xff9B36FF);
+const Color bluePopupButton = Color(0xff8061FF);

@@ -1,20 +1,15 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/screens/dreamMovieScreen.dart';
 import 'package:visuamos/ui/screens/login.dart';
+import 'package:visuamos/ui/screens/sampleSimpleImage.dart';
+import 'package:visuamos/ui/screens/sample_dream_movie.dart';
+import 'package:visuamos/ui/screens/sample_vision_board.dart';
 import 'package:visuamos/ui/screens/simple_image.dart';
 import 'package:visuamos/ui/screens/visionBoardScreen.dart';
-import 'package:visuamos/ui/utils.dart';
-import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
-
-import '../widgets/dashboardBoxConatiner.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -143,13 +138,15 @@ class _DashboardState extends State<Dashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //TODO: Add a popup dialog for every button with 3/4 options
                     DashboardButton(
                       'Balance Slips',
                       'assets/dashboard/balance_slip.png',
                       dashboardButton1GradientFirst,
                       dashboardButton1GradientSecond,
                       true,
+                      () {
+                        showCustomDialog(context, 'Balance Slips');
+                      },
                     ),
                     DashboardButton(
                       'Bank Statements',
@@ -157,6 +154,9 @@ class _DashboardState extends State<Dashboard> {
                       dashboardButton2GradientFirst,
                       dashboardButton2GradientSecond,
                       false,
+                      () {
+                        showCustomDialog(context, 'Bank Statements');
+                      },
                     ),
                     DashboardButton(
                       'Dream Checks',
@@ -164,6 +164,9 @@ class _DashboardState extends State<Dashboard> {
                       dashboardButton3GradientFirst,
                       dashboardButton3GradientSecond,
                       false,
+                      () {
+                        showCustomDialog(context, 'Dream Checks');
+                      },
                     ),
                     DashboardButton(
                       'Dream Movies',
@@ -171,6 +174,9 @@ class _DashboardState extends State<Dashboard> {
                       dashboardButton4GradientFirst,
                       dashboardButton4GradientSecond,
                       false,
+                      () {
+                        showCustomDialog(context, 'Dream Movies');
+                      },
                     ),
                     DashboardButton(
                       'Vision Boards',
@@ -178,6 +184,9 @@ class _DashboardState extends State<Dashboard> {
                       dashboardButton5GradientFirst,
                       dashboardButton5GradientSecond,
                       true,
+                      () {
+                        showCustomDialog(context, 'Vision Boards');
+                      },
                     ),
                   ],
                 ),
@@ -189,8 +198,231 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  showCustomDialog(BuildContext context, String title) => showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 50.h),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 270.w,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          backgroundColor: bluePopupButton,
+                          textStyle: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 17.h),
+                        child: Text(title == 'Balance Slips'
+                            ? 'Add a Balance Slip'
+                            : title == 'Bank Statements'
+                                ? 'Add a Bank Statement'
+                                : title == 'Dream Checks'
+                                    ? 'Add a Dream Check'
+                                    : title == 'Dream Movies'
+                                        ? 'Add a Dream Movie'
+                                        : 'Add a Vision Board'),
+                      ),
+
+                      //TODO: Have to create new pages for this to accomodate the changes
+
+                      onPressed: () => title == 'Balance Slips'
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SimpleImage(
+                                  imageType: 0,
+                                ),
+                              ),
+                            )
+                          : title == 'Bank Statements'
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SimpleImage(
+                                      imageType: 1,
+                                    ),
+                                  ),
+                                )
+                              : title == 'Dream Checks'
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SimpleImage(
+                                          imageType: 2,
+                                        ),
+                                      ),
+                                    )
+                                  : title == 'Dream Movies'
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DreamMovieScreen(),
+                                          ),
+                                        )
+                                      : Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                VisionBoardScreen(),
+                                          ),
+                                        ),
+                    ),
+                  ),
+                  SizedBox(height: 5.h),
+                  SizedBox(
+                    width: 270.w,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          backgroundColor: purplePopupButton,
+                          textStyle: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 17.h),
+                        child: Text(title == 'Balance Slips'
+                            ? 'View Balance Slip'
+                            : title == 'Bank Statements'
+                                ? 'View Bank Statement'
+                                : title == 'Dream Checks'
+                                    ? 'View Dream Check'
+                                    : title == 'Dream Movies'
+                                        ? 'View Dream Movie'
+                                        : 'View Vision Board'),
+                      ),
+                      onPressed: () => title == 'Balance Slips'
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SimpleImage(
+                                  imageType: 0,
+                                ),
+                              ),
+                            )
+                          : title == 'Bank Statements'
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SimpleImage(
+                                      imageType: 1,
+                                    ),
+                                  ),
+                                )
+                              : title == 'Dream Checks'
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SimpleImage(
+                                          imageType: 2,
+                                        ),
+                                      ),
+                                    )
+                                  : title == 'Dream Movies'
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DreamMovieScreen(),
+                                          ),
+                                        )
+                                      : Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                VisionBoardScreen(),
+                                          ),
+                                        ),
+                    ),
+                  ),
+                  SizedBox(height: 5.h),
+                  SizedBox(
+                    width: 270.w,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          backgroundColor: bluePopupButton,
+                          textStyle: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 17.h),
+                        child: Text(title == 'Balance Slips'
+                            ? 'Sample Balance Slip'
+                            : title == 'Bank Statements'
+                                ? 'Sample Bank Statement'
+                                : title == 'Dream Checks'
+                                    ? 'Sample Dream Check'
+                                    : title == 'Dream Movies'
+                                        ? 'Sample Dream Movie'
+                                        : 'Sample Vision Board'),
+                      ),
+                      onPressed: () => title == 'Balance Slips'
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SampleSimpleImage(
+                                  imageType: 0,
+                                ),
+                              ),
+                            )
+                          : title == 'Bank Statements'
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SampleSimpleImage(
+                                      imageType: 1,
+                                    ),
+                                  ),
+                                )
+                              : title == 'Dream Checks'
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SampleSimpleImage(
+                                          imageType: 2,
+                                        ),
+                                      ),
+                                    )
+                                  : title == 'Dream Movies'
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SampleDreamMovie(),
+                                          ),
+                                        )
+                                      : Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SampleVisionBoard(),
+                                          ),
+                                        ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
   Container DashboardButton(String title, String imagePath, Color firstColor,
-      Color secondColor, bool alignUpDown) {
+      Color secondColor, bool alignUpDown, final Function() callBackFunc) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -209,7 +441,7 @@ class _DashboardState extends State<Dashboard> {
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             textStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
-        onPressed: () async {},
+        onPressed: callBackFunc,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
