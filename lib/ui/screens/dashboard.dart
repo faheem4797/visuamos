@@ -236,9 +236,6 @@ class _DashboardState extends State<Dashboard> {
                                         ? 'Add a Dream Movie'
                                         : 'Add a Vision Board'),
                       ),
-
-                      //TODO: Have to create new pages for this to accomodate the changes
-
                       onPressed: () => title == 'Balance Slips'
                           ? Navigator.push(
                               context,

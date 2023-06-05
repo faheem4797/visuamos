@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:visuamos/ui/colors/colors.dart';
-import 'package:visuamos/ui/screens/simple_image.dart';
 import 'package:visuamos/ui/screens/login.dart';
 
 import '../widgets/CommonBottomButton.dart';

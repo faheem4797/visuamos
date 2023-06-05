@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:visuamos/ui/colors/colors.dart';
-import 'package:visuamos/ui/widgets/CommonBottomButton.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:visuamos/ui/widgets/customTextFormField.dart';
 
@@ -17,8 +16,6 @@ class AddSimpleImage extends StatefulWidget {
   @override
   State<AddSimpleImage> createState() => _AddSimpleImageState();
 }
-
-//TODO: CHANGE APPBAR and button design
 
 class _AddSimpleImageState extends State<AddSimpleImage> {
   final User? user = FirebaseAuth.instance.currentUser;

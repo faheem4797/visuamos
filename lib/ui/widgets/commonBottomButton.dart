@@ -20,7 +20,7 @@ class CommonBottomButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.r),
             ),
-            primary: black,
+            backgroundColor: black,
             textStyle: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
         onPressed: bottomButtonCallBackFunc,
         child: title,

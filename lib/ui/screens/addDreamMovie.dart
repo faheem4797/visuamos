@@ -13,7 +13,6 @@ import 'package:screenshot/screenshot.dart';
 import 'package:visuamos/data/db/movieDatabase.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/utils.dart';
-import 'package:visuamos/ui/widgets/CommonBottomButton.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:visuamos/ui/widgets/customTextFormField.dart';
 

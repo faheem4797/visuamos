@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:visuamos/data/db/visionBoardDatabase.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/utils.dart';
-import 'package:visuamos/ui/widgets/CommonBottomButton.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:visuamos/ui/widgets/customTextFormField.dart';
 

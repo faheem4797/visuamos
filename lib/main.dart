@@ -5,6 +5,8 @@ import 'package:visuamos/ui/colors/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:visuamos/ui/screens/login.dart';
 
+//TODO: MAKE ANDROID ICON BETTER AND FIT THE AVATAR CIRCLE
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
