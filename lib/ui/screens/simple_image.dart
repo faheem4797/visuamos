@@ -4,21 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:intl/intl.dart';
 import 'package:visuamos/data/db/database.dart';
 import 'package:visuamos/data/models/simpleImageData.dart';
-import 'package:visuamos/services/purchases_api.dart';
-import 'package:visuamos/ui/screens/sampleSimpleImage.dart';
 import 'package:visuamos/ui/screens/simple_image_preview.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
 import 'package:http/http.dart' as http;
 
 import '../colors/colors.dart';
-import '../widgets/CommonBottomButton.dart';
-import '../widgets/customTextFormField.dart';
 
 class SimpleImage extends StatefulWidget {
   final int imageType;
@@ -272,232 +265,232 @@ class _SimpleImageState extends State<SimpleImage> {
             const SizedBox(
               height: 10,
             ),
-            Center(
-              child: CommonBottomButton(
-                title: (widget.imageType == 0)
-                    ? const Text(
-                        'Add a Balance Slip',
-                        textAlign: TextAlign.center,
-                      )
-                    : (widget.imageType == 1)
-                        ? const Text(
-                            'Add a Bank Statement',
-                            textAlign: TextAlign.center,
-                          )
-                        : const Text(
-                            'Add a Dream Check',
-                            textAlign: TextAlign.center,
-                          ),
-                bottomButtonCallBackFunc: () async {
-                  await customModalBottomSheet(context);
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: CommonBottomButton(
-                title: (widget.imageType == 0)
-                    ? const Text(
-                        'Sample Balance Slip',
-                        textAlign: TextAlign.center,
-                      )
-                    : (widget.imageType == 1)
-                        ? const Text(
-                            'Sample Bank Statement',
-                            textAlign: TextAlign.center,
-                          )
-                        : const Text(
-                            'Sample Dream Check',
-                            textAlign: TextAlign.center,
-                          ),
-                bottomButtonCallBackFunc: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SampleSimpleImage(imageType: widget.imageType)),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            // Center(
+            //   child: CommonBottomButton(
+            //     title: (widget.imageType == 0)
+            //         ? const Text(
+            //             'Add a Balance Slip',
+            //             textAlign: TextAlign.center,
+            //           )
+            //         : (widget.imageType == 1)
+            //             ? const Text(
+            //                 'Add a Bank Statement',
+            //                 textAlign: TextAlign.center,
+            //               )
+            //             : const Text(
+            //                 'Add a Dream Check',
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //     bottomButtonCallBackFunc: () async {
+            //       await customModalBottomSheet(context);
+            //     },
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // Center(
+            //   child: CommonBottomButton(
+            //     title: (widget.imageType == 0)
+            //         ? const Text(
+            //             'Sample Balance Slip',
+            //             textAlign: TextAlign.center,
+            //           )
+            //         : (widget.imageType == 1)
+            //             ? const Text(
+            //                 'Sample Bank Statement',
+            //                 textAlign: TextAlign.center,
+            //               )
+            //             : const Text(
+            //                 'Sample Dream Check',
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //     bottomButtonCallBackFunc: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) =>
+            //                 SampleSimpleImage(imageType: widget.imageType)),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
           ],
         ),
       ),
     );
   }
 
-  customModalBottomSheet(BuildContext context) async {
-    showMaterialModalBottomSheet(
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBarEveryWhere(
-          isIconRequired: true,
-          callBackFunc: () {
-            logoutAndPushLoginScreen(context);
-          },
-          title: (widget.imageType == 0)
-              ? 'Balance Slips'
-              : (widget.imageType == 1)
-                  ? 'Bank Statements'
-                  : 'Dream Checks',
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomTextFormField(
-                      controller: nameController,
-                      hintText: 'Enter your name here',
-                      labelText: 'Name',
-                      validator: (value) {
-                        if (nameController.text == '') {
-                          return 'Please enter a name';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomTextFormField(
-                      hintText: 'Enter the amount here',
-                      labelText: 'Amount',
-                      controller: amountController,
-                      textInputType: TextInputType.number,
-                      validator: (value) {
-                        if (amountController.text == '') {
-                          return 'Please enter an amount';
-                        } else if (amountController.text
-                            .contains(RegExp('[a-zA-Z]'))) {
-                          return 'Please enter a valid amount';
-                        } else if (('.'
-                                .allMatches(amountController.text)
-                                .length) >
-                            1) {
-                          return 'Please enter a valid amount';
-                        } else if (!amountController.text.contains(RegExp(
-                            "^[0-9]+(([.]?[0-9]*)?|([ ]?[0-9]*[/]?[0-9]*)?)?"))) {
-                          return 'Please enter a valid amount';
-                        } else if (amountController.text != '') {
-                          final temp = amountController.text.split('');
-                          temp[0].contains('.');
-                          if (temp[0].contains('.')) {
-                            return 'Please enter a valid amount';
-                          } else if (temp.last == '.') {
-                            return 'Please enter a valid amount';
-                          }
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomTextFormField(
-                        controller: dateController,
-                        hintText: 'Enter date here',
-                        labelText: 'Date',
-                        readOnly: true,
-                        validator: (value) {
-                          if (dateController.text == '') {
-                            return 'Please enter a date';
-                          } else {
-                            return null;
-                          }
-                        },
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101));
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat('dd-MM-yyyy').format(pickedDate);
-                            setState(() {
-                              dateController.text = formattedDate;
-                            });
-                          }
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomTextFormField(
-                      controller: couponController,
-                      hintText: 'Enter your coupon here',
-                      labelText: 'Coupon',
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: CommonBottomButton(
-                          title: (widget.imageType == 0)
-                              ? const Text(
-                                  'Generate Balance Slip',
-                                  textAlign: TextAlign.center,
-                                )
-                              : (widget.imageType == 1)
-                                  ? const Text(
-                                      'Generate Bank Statement',
-                                      textAlign: TextAlign.center,
-                                    )
-                                  : const Text(
-                                      'Generate Dream Check',
-                                      textAlign: TextAlign.center,
-                                    ),
-                          bottomButtonCallBackFunc: () async {
-                            final isValid = formKey.currentState?.validate();
-                            if (isValid == true) {
-                              formKey.currentState?.save();
+  // customModalBottomSheet(BuildContext context) async {
+  //   showMaterialModalBottomSheet(
+  //     context: context,
+  //     builder: (context) => Scaffold(
+  //       appBar: AppBarEveryWhere(
+  //         isIconRequired: true,
+  //         callBackFunc: () {
+  //           logoutAndPushLoginScreen(context);
+  //         },
+  //         title: (widget.imageType == 0)
+  //             ? 'Balance Slips'
+  //             : (widget.imageType == 1)
+  //                 ? 'Bank Statements'
+  //                 : 'Dream Checks',
+  //       ),
+  //       body: Center(
+  //         child: SingleChildScrollView(
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 10.0),
+  //             child: Form(
+  //               key: formKey,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   CustomTextFormField(
+  //                     controller: nameController,
+  //                     hintText: 'Enter your name here',
+  //                     labelText: 'Name',
+  //                     validator: (value) {
+  //                       if (nameController.text == '') {
+  //                         return 'Please enter a name';
+  //                       } else {
+  //                         return null;
+  //                       }
+  //                     },
+  //                   ),
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   CustomTextFormField(
+  //                     hintText: 'Enter the amount here',
+  //                     labelText: 'Amount',
+  //                     controller: amountController,
+  //                     textInputType: TextInputType.number,
+  //                     validator: (value) {
+  //                       if (amountController.text == '') {
+  //                         return 'Please enter an amount';
+  //                       } else if (amountController.text
+  //                           .contains(RegExp('[a-zA-Z]'))) {
+  //                         return 'Please enter a valid amount';
+  //                       } else if (('.'
+  //                               .allMatches(amountController.text)
+  //                               .length) >
+  //                           1) {
+  //                         return 'Please enter a valid amount';
+  //                       } else if (!amountController.text.contains(RegExp(
+  //                           "^[0-9]+(([.]?[0-9]*)?|([ ]?[0-9]*[/]?[0-9]*)?)?"))) {
+  //                         return 'Please enter a valid amount';
+  //                       } else if (amountController.text != '') {
+  //                         final temp = amountController.text.split('');
+  //                         temp[0].contains('.');
+  //                         if (temp[0].contains('.')) {
+  //                           return 'Please enter a valid amount';
+  //                         } else if (temp.last == '.') {
+  //                           return 'Please enter a valid amount';
+  //                         }
+  //                       } else {
+  //                         return null;
+  //                       }
+  //                     },
+  //                   ),
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   CustomTextFormField(
+  //                       controller: dateController,
+  //                       hintText: 'Enter date here',
+  //                       labelText: 'Date',
+  //                       readOnly: true,
+  //                       validator: (value) {
+  //                         if (dateController.text == '') {
+  //                           return 'Please enter a date';
+  //                         } else {
+  //                           return null;
+  //                         }
+  //                       },
+  //                       onTap: () async {
+  //                         DateTime? pickedDate = await showDatePicker(
+  //                             context: context,
+  //                             initialDate: DateTime.now(),
+  //                             firstDate: DateTime(2000),
+  //                             lastDate: DateTime(2101));
+  //                         if (pickedDate != null) {
+  //                           String formattedDate =
+  //                               DateFormat('dd-MM-yyyy').format(pickedDate);
+  //                           setState(() {
+  //                             dateController.text = formattedDate;
+  //                           });
+  //                         }
+  //                       }),
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   CustomTextFormField(
+  //                     controller: couponController,
+  //                     hintText: 'Enter your coupon here',
+  //                     labelText: 'Coupon',
+  //                   ),
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   Center(
+  //                     child: CommonBottomButton(
+  //                         title: (widget.imageType == 0)
+  //                             ? const Text(
+  //                                 'Generate Balance Slip',
+  //                                 textAlign: TextAlign.center,
+  //                               )
+  //                             : (widget.imageType == 1)
+  //                                 ? const Text(
+  //                                     'Generate Bank Statement',
+  //                                     textAlign: TextAlign.center,
+  //                                   )
+  //                                 : const Text(
+  //                                     'Generate Dream Check',
+  //                                     textAlign: TextAlign.center,
+  //                                   ),
+  //                         bottomButtonCallBackFunc: () async {
+  //                           final isValid = formKey.currentState?.validate();
+  //                           if (isValid == true) {
+  //                             formKey.currentState?.save();
 
-                              var a = await _crudStorage.addImageData(
-                                user!.uid,
-                                nameController.text,
-                                amountController.text,
-                                dateController.text,
-                                (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
-                                    ? 1
-                                    : 0,
-                                //(couponController.text == 'free') ? 1 : 0,
-                                couponController.text,
-                                widget.imageType,
-                              );
-                              print(a);
-                              setState(() {
-                                nameController.clear();
-                                amountController.clear();
-                                dateController.clear();
-                                couponController.clear();
-                              });
-                              Navigator.pop(context);
-                            }
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  //                             var a = await _crudStorage.addImageData(
+  //                               user!.uid,
+  //                               nameController.text,
+  //                               amountController.text,
+  //                               dateController.text,
+  //                               (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
+  //                                   ? 1
+  //                                   : 0,
+  //                               //(couponController.text == 'free') ? 1 : 0,
+  //                               couponController.text,
+  //                               widget.imageType,
+  //                             );
+  //                             print(a);
+  //                             setState(() {
+  //                               nameController.clear();
+  //                               amountController.clear();
+  //                               dateController.clear();
+  //                               couponController.clear();
+  //                             });
+  //                             Navigator.pop(context);
+  //                           }
+  //                         }),
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> makePayment(String amount, SimpleImageData data) async {
     try {

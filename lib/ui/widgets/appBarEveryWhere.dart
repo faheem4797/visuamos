@@ -94,12 +94,22 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: const IconThemeData(color: black),
-      backgroundColor: darkBlue,
+      iconTheme: const IconThemeData(color: white),
+      //backgroundColor: darkBlue,
+      automaticallyImplyLeading: false,
       title: Text(
         title,
         style: TextStyle(
-            fontSize: 24.sp, fontWeight: FontWeight.bold, color: black),
+            //fontSize: 24.sp, //fontWeight: FontWeight.bold,
+            color: white),
+      ),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[lightBlueGradient, purpleGradient]),
+        ),
       ),
       actions: [
         isIconRequired
@@ -110,12 +120,10 @@ class AppBarEveryWhere extends StatelessWidget implements PreferredSizeWidget {
                     icon: Icon(
                       Icons.account_circle,
                       size: 42.sp,
-                      color: black,
+                      color: white,
                     ),
-                    items:
-                        //TODO: ADD A DELETE ACCOUNT option here as well
-                        ['Logout', 'Delete Account']
-                            .map<DropdownMenuItem<String>>((String val) {
+                    items: ['Logout', 'Delete Account']
+                        .map<DropdownMenuItem<String>>((String val) {
                       return DropdownMenuItem<String>(
                         value: val,
                         child: Text(val),

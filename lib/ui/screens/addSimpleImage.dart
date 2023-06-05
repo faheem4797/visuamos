@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/widgets/CommonBottomButton.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
 import 'package:visuamos/ui/widgets/customTextFormField.dart';
@@ -62,10 +64,10 @@ class _AddSimpleImageState extends State<AddSimpleImage> {
           //logoutAndPushLoginScreen(context);
         },
         title: (widget.imageType == 0)
-            ? 'Balance Slips'
+            ? 'Add Balance Slip'
             : (widget.imageType == 1)
-                ? 'Bank Statements'
-                : 'Dream Checks',
+                ? 'Add Bank Statement'
+                : 'Add Dream Check',
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -166,49 +168,55 @@ class _AddSimpleImageState extends State<AddSimpleImage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Center(
-                    child: CommonBottomButton(
-                        title: (widget.imageType == 0)
-                            ? const Text(
-                                'Generate Balance Slip',
-                                textAlign: TextAlign.center,
-                              )
-                            : (widget.imageType == 1)
-                                ? const Text(
-                                    'Generate Bank Statement',
-                                    textAlign: TextAlign.center,
-                                  )
-                                : const Text(
-                                    'Generate Dream Check',
-                                    textAlign: TextAlign.center,
-                                  ),
-                        bottomButtonCallBackFunc: () async {
-                          final isValid = formKey.currentState?.validate();
-                          if (isValid == true) {
-                            formKey.currentState?.save();
+                  SizedBox(
+                    width: 270.w,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          backgroundColor: bluePopupButton,
+                          textStyle: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                      onPressed: () async {
+                        final isValid = formKey.currentState?.validate();
+                        if (isValid == true) {
+                          formKey.currentState?.save();
 
-                            var a = await _crudStorage.addImageData(
-                              user!.uid,
-                              nameController.text,
-                              amountController.text,
-                              dateController.text,
-                              (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
-                                  ? 1
-                                  : 0,
-                              //(couponController.text == 'free') ? 1 : 0,
-                              couponController.text,
-                              widget.imageType,
-                            );
-                            print(a);
-                            setState(() {
-                              nameController.clear();
-                              amountController.clear();
-                              dateController.clear();
-                              couponController.clear();
-                            });
-                            Navigator.pop(context);
-                          }
-                        }),
+                          var a = await _crudStorage.addImageData(
+                            user!.uid,
+                            nameController.text,
+                            amountController.text,
+                            dateController.text,
+                            (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
+                                ? 1
+                                : 0,
+                            //(couponController.text == 'free') ? 1 : 0,
+                            couponController.text,
+                            widget.imageType,
+                          );
+                          print(a);
+                          setState(() {
+                            nameController.clear();
+                            amountController.clear();
+                            dateController.clear();
+                            couponController.clear();
+                          });
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 17.h),
+                        child: Text(
+                          (widget.imageType == 0)
+                              ? 'Generate Balance Slip'
+                              : (widget.imageType == 1)
+                                  ? 'Generate Bank Statement'
+                                  : 'Generate Dream Check',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),

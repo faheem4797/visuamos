@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
+import 'package:visuamos/ui/screens/addDreamMovie.dart';
 import 'package:visuamos/ui/screens/addSimpleImage.dart';
 import 'package:visuamos/ui/screens/dreamMovieScreen.dart';
 import 'package:visuamos/ui/screens/login.dart';
@@ -269,7 +270,7 @@ class _DashboardState extends State<Dashboard> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                DreamMovieScreen(),
+                                                AddDreamMovie(),
                                           ),
                                         )
                                       : Navigator.push(
