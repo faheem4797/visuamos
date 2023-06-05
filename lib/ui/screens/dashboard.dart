@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
+import 'package:visuamos/ui/screens/addSimpleImage.dart';
 import 'package:visuamos/ui/screens/dreamMovieScreen.dart';
 import 'package:visuamos/ui/screens/login.dart';
 import 'package:visuamos/ui/screens/sampleSimpleImage.dart';
@@ -240,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SimpleImage(
+                                builder: (context) => AddSimpleImage(
                                   imageType: 0,
                                 ),
                               ),
@@ -249,7 +250,7 @@ class _DashboardState extends State<Dashboard> {
                               ? Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SimpleImage(
+                                    builder: (context) => AddSimpleImage(
                                       imageType: 1,
                                     ),
                                   ),
@@ -258,7 +259,7 @@ class _DashboardState extends State<Dashboard> {
                                   ? Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => SimpleImage(
+                                        builder: (context) => AddSimpleImage(
                                           imageType: 2,
                                         ),
                                       ),
