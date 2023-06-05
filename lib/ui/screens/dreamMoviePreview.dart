@@ -334,7 +334,7 @@ class _DreamMoviePreviewState extends State<DreamMoviePreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                backgroundColor: black,
+                                backgroundColor: purplePopupButton,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),

@@ -1,28 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:image/image.dart' as img;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:visuamos/data/db/movieDatabase.dart';
 import 'package:visuamos/data/models/dreamMovieData.dart';
 import 'package:visuamos/ui/screens/dreamMoviePreview.dart';
-import 'package:visuamos/ui/screens/sample_dream_movie.dart';
 import 'package:visuamos/ui/utils.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:visuamos/ui/widgets/commonBottomButton.dart';
 import '../colors/colors.dart';
-import '../widgets/customTextFormField.dart';
 
 class DreamMovieScreen extends StatefulWidget {
   const DreamMovieScreen({super.key});

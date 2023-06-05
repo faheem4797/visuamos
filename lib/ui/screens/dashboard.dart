@@ -5,6 +5,7 @@ import 'package:visuamos/services/authService.dart';
 import 'package:visuamos/ui/colors/colors.dart';
 import 'package:visuamos/ui/screens/addDreamMovie.dart';
 import 'package:visuamos/ui/screens/addSimpleImage.dart';
+import 'package:visuamos/ui/screens/addVisionBoard.dart';
 import 'package:visuamos/ui/screens/dreamMovieScreen.dart';
 import 'package:visuamos/ui/screens/login.dart';
 import 'package:visuamos/ui/screens/sampleSimpleImage.dart';
@@ -277,7 +278,7 @@ class _DashboardState extends State<Dashboard> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                VisionBoardScreen(),
+                                                AddVisionBoard(),
                                           ),
                                         ),
                     ),

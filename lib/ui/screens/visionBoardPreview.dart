@@ -13,10 +13,7 @@ import 'package:screenshot/screenshot.dart';
 
 import 'package:visuamos/ui/utils.dart';
 import 'package:visuamos/ui/widgets/appBarEveryWhere.dart';
-import 'package:visuamos/ui/widgets/balanceSlipWidget.dart';
-import 'package:visuamos/ui/widgets/bankStatementWidget.dart';
-import 'package:visuamos/ui/widgets/commonBottomButton.dart';
-import 'package:visuamos/ui/widgets/dreamCheckWidget.dart';
+
 import 'package:visuamos/ui/widgets/visionBoardWidget.dart';
 
 import '../colors/colors.dart';
@@ -179,7 +176,7 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                primary: black,
+                                backgroundColor: purplePopupButton,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
@@ -215,7 +212,7 @@ class _VisionBoardPreviewState extends State<VisionBoardPreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                primary: black,
+                                backgroundColor: purplePopupButton,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),

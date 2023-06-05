@@ -178,7 +178,7 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                primary: black,
+                                backgroundColor: purplePopupButton,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),
@@ -214,7 +214,7 @@ class _SimpleImagePreviewState extends State<SimpleImagePreview> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
-                                primary: black,
+                                backgroundColor: purplePopupButton,
                                 textStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold)),

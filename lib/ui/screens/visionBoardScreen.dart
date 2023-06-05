@@ -228,196 +228,163 @@ class _VisionBoardScreenState extends State<VisionBoardScreen> {
             SizedBox(
               height: 10.h,
             ),
-            Center(
-              child: CommonBottomButton(
-                title: const Text(
-                  'Add a Vision Board',
-                  textAlign: TextAlign.center,
-                ),
-                bottomButtonCallBackFunc: () async {
-                  await customModalBottomSheet(context);
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: CommonBottomButton(
-                title: const Text(
-                  'Sample Vision Board',
-                  textAlign: TextAlign.center,
-                ),
-                bottomButtonCallBackFunc: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SampleVisionBoard(),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
           ],
         ),
       ),
     );
   }
 
-  customModalBottomSheet(BuildContext context) async {
-    Random random = Random();
-    String folderName = (random.nextInt(900000) + 100000).toString();
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String folderPath = '${appDocDir.path}/$folderName';
-    showMaterialModalBottomSheet(
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBarEveryWhere(
-          isIconRequired: true,
-          callBackFunc: () {
-            logoutAndPushLoginScreen(context);
-          },
-          title: 'Vision Board',
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomTextFormField(
-                      controller: fileNameController,
-                      hintText: 'Enter board name here',
-                      labelText: 'Vision Board Name',
-                      validator: (value) {
-                        if (fileNameController.text == '') {
-                          return 'Please enter a vision board name';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    SizedBox(height: 15.h),
-                    Center(
-                      child: CommonBottomButton(
-                          title: const Text(
-                            'Pick Images',
-                            textAlign: TextAlign.center,
-                          ),
-                          bottomButtonCallBackFunc: () async {
-                            List<XFile> images = await _picker.pickMultiImage();
-                            print('here');
+  // customModalBottomSheet(BuildContext context) async {
+  //   Random random = Random();
+  //   String folderName = (random.nextInt(900000) + 100000).toString();
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   String folderPath = '${appDocDir.path}/$folderName';
+  //   showMaterialModalBottomSheet(
+  //     context: context,
+  //     builder: (context) => Scaffold(
+  //       appBar: AppBarEveryWhere(
+  //         isIconRequired: true,
+  //         callBackFunc: () {
+  //           logoutAndPushLoginScreen(context);
+  //         },
+  //         title: 'Vision Board',
+  //       ),
+  //       body: Center(
+  //         child: SingleChildScrollView(
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 10.0),
+  //             child: Form(
+  //               key: formKey,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   CustomTextFormField(
+  //                     controller: fileNameController,
+  //                     hintText: 'Enter board name here',
+  //                     labelText: 'Vision Board Name',
+  //                     validator: (value) {
+  //                       if (fileNameController.text == '') {
+  //                         return 'Please enter a vision board name';
+  //                       } else {
+  //                         return null;
+  //                       }
+  //                     },
+  //                   ),
+  //                   SizedBox(height: 15.h),
+  //                   Center(
+  //                     child: CommonBottomButton(
+  //                         title: const Text(
+  //                           'Pick Images',
+  //                           textAlign: TextAlign.center,
+  //                         ),
+  //                         bottomButtonCallBackFunc: () async {
+  //                           List<XFile> images = await _picker.pickMultiImage();
+  //                           print('here');
 
-                            if (images.length == 8) {
-                              File fileOne =
-                                  await File(folderPath + '/img001.jpg')
-                                      .create(recursive: true);
-                              print(fileOne.path);
-                              await fileOne
-                                  .writeAsBytes(await images[0].readAsBytes());
-                              File fileTwo = File(folderPath + '/img002.jpg');
-                              await fileTwo
-                                  .writeAsBytes(await images[1].readAsBytes());
-                              File fileThree = File(folderPath + '/img003.jpg');
-                              await fileThree
-                                  .writeAsBytes(await images[2].readAsBytes());
-                              File fileFour = File(folderPath + '/img004.jpg');
-                              await fileFour
-                                  .writeAsBytes(await images[3].readAsBytes());
-                              File fileFive = File(folderPath + '/img005.jpg');
-                              await fileFive
-                                  .writeAsBytes(await images[4].readAsBytes());
-                              File fileSix = File(folderPath + '/img006.jpg');
-                              await fileSix
-                                  .writeAsBytes(await images[5].readAsBytes());
-                              File fileSeven = File(folderPath + '/img007.jpg');
-                              await fileSeven
-                                  .writeAsBytes(await images[6].readAsBytes());
-                              File fileEight = File(folderPath + '/img008.jpg');
-                              await fileEight
-                                  .writeAsBytes(await images[7].readAsBytes());
+  //                           if (images.length == 8) {
+  //                             File fileOne =
+  //                                 await File(folderPath + '/img001.jpg')
+  //                                     .create(recursive: true);
+  //                             print(fileOne.path);
+  //                             await fileOne
+  //                                 .writeAsBytes(await images[0].readAsBytes());
+  //                             File fileTwo = File(folderPath + '/img002.jpg');
+  //                             await fileTwo
+  //                                 .writeAsBytes(await images[1].readAsBytes());
+  //                             File fileThree = File(folderPath + '/img003.jpg');
+  //                             await fileThree
+  //                                 .writeAsBytes(await images[2].readAsBytes());
+  //                             File fileFour = File(folderPath + '/img004.jpg');
+  //                             await fileFour
+  //                                 .writeAsBytes(await images[3].readAsBytes());
+  //                             File fileFive = File(folderPath + '/img005.jpg');
+  //                             await fileFive
+  //                                 .writeAsBytes(await images[4].readAsBytes());
+  //                             File fileSix = File(folderPath + '/img006.jpg');
+  //                             await fileSix
+  //                                 .writeAsBytes(await images[5].readAsBytes());
+  //                             File fileSeven = File(folderPath + '/img007.jpg');
+  //                             await fileSeven
+  //                                 .writeAsBytes(await images[6].readAsBytes());
+  //                             File fileEight = File(folderPath + '/img008.jpg');
+  //                             await fileEight
+  //                                 .writeAsBytes(await images[7].readAsBytes());
 
-                              setState(() {
-                                image1 = fileOne.path;
-                                image2 = fileTwo.path;
-                                image3 = fileThree.path;
-                                image4 = fileFour.path;
-                                image5 = fileFive.path;
-                                image6 = fileSix.path;
-                                image7 = fileSeven.path;
-                                image8 = fileEight.path;
-                              });
-                            }
-                          }),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    const Center(
-                        child: Text(
-                      'Please pick 8 images to create a vision board.',
-                      textAlign: TextAlign.center,
-                    )),
-                    SizedBox(height: 15.h),
-                    Center(
-                      child: CommonBottomButton(
-                          title: const Text(
-                            'Generate a Vision Board',
-                            textAlign: TextAlign.center,
-                          ),
-                          bottomButtonCallBackFunc: () async {
-                            final isValid = formKey.currentState?.validate();
-                            if (isValid == true) {
-                              if (image1 != null &&
-                                  image2 != null &&
-                                  image3 != null &&
-                                  image4 != null &&
-                                  image5 != null &&
-                                  image6 != null &&
-                                  image7 != null &&
-                                  image8 != null) {
-                                var a =
-                                    await _crudStorage.addVisionBoardImageData(
-                                  user!.uid,
-                                  image1!,
-                                  image2!,
-                                  image3!,
-                                  image4!,
-                                  image5!,
-                                  image6!,
-                                  image7!,
-                                  image8!,
-                                  fileNameController.text.replaceAll(" ", ""),
-                                  (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
-                                      ? 1
-                                      : 0,
-                                  '', // coupon
-                                );
-                                print(a);
-                                setState(() {
-                                  fileNameController.clear();
-                                });
+  //                             setState(() {
+  //                               image1 = fileOne.path;
+  //                               image2 = fileTwo.path;
+  //                               image3 = fileThree.path;
+  //                               image4 = fileFour.path;
+  //                               image5 = fileFive.path;
+  //                               image6 = fileSix.path;
+  //                               image7 = fileSeven.path;
+  //                               image8 = fileEight.path;
+  //                             });
+  //                           }
+  //                         }),
+  //                   ),
+  //                   SizedBox(
+  //                     height: 5.h,
+  //                   ),
+  //                   const Center(
+  //                       child: Text(
+  //                     'Please pick 8 images to create a vision board.',
+  //                     textAlign: TextAlign.center,
+  //                   )),
+  //                   SizedBox(height: 15.h),
+  //                   Center(
+  //                     child: CommonBottomButton(
+  //                         title: const Text(
+  //                           'Generate a Vision Board',
+  //                           textAlign: TextAlign.center,
+  //                         ),
+  //                         bottomButtonCallBackFunc: () async {
+  //                           final isValid = formKey.currentState?.validate();
+  //                           if (isValid == true) {
+  //                             if (image1 != null &&
+  //                                 image2 != null &&
+  //                                 image3 != null &&
+  //                                 image4 != null &&
+  //                                 image5 != null &&
+  //                                 image6 != null &&
+  //                                 image7 != null &&
+  //                                 image8 != null) {
+  //                               var a =
+  //                                   await _crudStorage.addVisionBoardImageData(
+  //                                 user!.uid,
+  //                                 image1!,
+  //                                 image2!,
+  //                                 image3!,
+  //                                 image4!,
+  //                                 image5!,
+  //                                 image6!,
+  //                                 image7!,
+  //                                 image8!,
+  //                                 fileNameController.text.replaceAll(" ", ""),
+  //                                 (user?.uid == 'MsWSztJZpLSQBeRfu0yKWhismu22')
+  //                                     ? 1
+  //                                     : 0,
+  //                                 '', // coupon
+  //                               );
+  //                               print(a);
+  //                               setState(() {
+  //                                 fileNameController.clear();
+  //                               });
 
-                                Navigator.pop(context);
-                              }
-                            }
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  //                               Navigator.pop(context);
+  //                             }
+  //                           }
+  //                         }),
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> makePayment(String amount, VisionBoardData data) async {
     try {
